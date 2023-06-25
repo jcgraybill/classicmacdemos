@@ -1,0 +1,72 @@
+{% extends "demos/base.html" %}
+{% load static %}
+{% load markdown_extras %}
+{% block title %}{% block og-title %}{% block tw-title %}{{ source.description }}{% if source.year %} ({% if source.month %}{{ source.get_month_display }} {% endif %}{{ source.year }}){% endif %} | Classic Macintosh Game Demos{% endblock %}{% endblock %}{% endblock %}
+{% block description %}{% block og-description %}{% block tw-description %}Macintosh magazine cover CD '{{ source.description }}'.{% endblock %}{% endblock %}{% endblock %}
+{% block og-image %}{% block tw-image %}{% if source.images >= 1 %}{{ request.scheme }}:{% static 'discs' %}/{{ source.slug }}/image-1.png{% else %}{{ block.super }}{% endif %}{% endblock %}{% endblock %}
+{% block splide %}{% if source.images > 1 %}{% include "demos/splide.html" %}{% endif %}{% endblock %}
+{% block header %}
+<h1>{{ source.description }}{% if source.year %} ({% if source.month %}{{ source.get_month_display }} {% endif %}{{ source.year }}){% endif %}</h1>
+<section>
+{% if source.magazine.slug %}<a href="{% url 'demos:magazine' source.magazine.slug %}"><b>{% if not request.session.is_old_browser %}&larr;{% endif %} All {{ source.magazine }}</b></a>{% endif %}
+{% if request.session.is_old_browser %}<p>{% endif %}
+{% if source.url %}<a href="{{ source.url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get the disc</b></a>{% endif %}
+{% if request.session.is_old_browser %}<p>{% endif %}
+{% if source.magazine_url and not source.magazine_embed_url %}<a href="{{ source.magazine_url }}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-book-open"></span> Read the magazine</b></a>{% endif %}
+{% if source.magazine_embed_url %}
+{% if request.session.is_old_browser %}
+<a href="{{ source.magazine_embed_url }}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-book-open"></span> Read the magazine</b></a>
+{% else %}
+<script>
+  function embed_magazine() { document.getElementById("magazine_viewer").innerHTML = '<iframe src="{{ source.magazine_embed_url }}" width="560" height="790" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>'; }
+</script>
+<a href="#" onclick="embed_magazine()"><b><span aria-hidden="true" class="fa-solid fa-book-open"></span> Read the magazine</b></a>
+{% endif %}
+{% endif %}
+{% if not request.session.is_old_browser %}
+{% if source.infinite_mac_url and source.infinite_mac_machine %}<a href="{% url 'demos:explore' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore in your browser at Infinite Mac</b></a>{% endif %}
+{% if source.infinite_mac_url and source.infinite_mac_osx_machine %}<a href="{% url 'demos:explore/osx' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Explore in your browser at Infinite Mac (Mac OS X)</b></a>{% endif %}
+{% if source.disc2_url %}<br><a href="{{ source.disc2_url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get disc 2</b></a>{% endif %}
+{% if source.disc2_infinite_mac_url and source.infinite_mac_machine %}<a href="{% url 'demos:explore/alt' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 2 at Infinite Mac</b></a>{% endif %}
+{% if source.disc2_infinite_mac_url and source.infinite_mac_osx_machine %}<a href="{% url 'demos:explore/alt/osx' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Explore disc 2 at Infinite Mac (Mac OS X)</b></a>{% endif %}
+{% endif %}
+</section>
+{% endblock %}
+{% block content %}
+<section>
+{% if source.blurb or source.images > 0 or source.magazine_embed_url %}
+<aside class="wide" style="border: none;">
+{% if source.blurb %}
+<article>{{ source.blurb | markdown | safe }}</article>
+{% endif %}
+{% if source.images == 0 %}
+<section id="magazine_viewer"></section>
+{% elif source.images == 1 %}
+<section id="magazine_viewer"><img src="{{ request.scheme }}:{% static 'discs' %}/{{ source.slug }}/image-1.png" alt="Image of {{ source.description }}"></section>
+{% elif source.images > 1 %}
+    <section class="splide" aria-label="Images of {{ source.description }}" id="magazine_viewer">
+        <div class="splide__track">
+              <ul class="splide__list">
+                {% for image in images %}
+                {% if request.session.is_old_browser %}
+                  <li class="splide__slide"><a href="{{ request.scheme }}:{% static 'discs' %}/{{ source.slug }}/image-{{ image }}.png">Image {{ image }} of {{ source.description }}</a></li>
+                {% else %}
+                <li class="splide__slide"><img src="{{ request.scheme }}:{% static 'discs' %}/{{ source.slug }}/image-{{ image }}.png" alt="Image {{ image }} of {{ source.description }}"></li>
+                {% endif %}
+                {% endfor %}
+                </ul>
+        </div>
+      </section>
+      <script>
+        new Splide( '.splide', { autoplay: true, rewind: true } ).mount();
+    </script>
+{% endif %}
+</aside>
+{% endif %}
+{% if source.get_sorted_games %}
+{% include "demos/game_cards.html" with games=source.get_sorted_games header="Games from this disc" border=True clear=True %}
+{% endif %}
+</section>
+{% endblock %}
+{% block footer %}{% if source.contributor %}Credit and thanks to {% if source.contributor_url %}<a href="{{ source.contributor_url }}" target="_blank">{% endif %}{{ source.contributor }}{% if source.contributor_url %}</a>{% endif %}.{% endif %}
+Added {{ source.added }}{% endblock %}

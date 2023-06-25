@@ -1,0 +1,24 @@
+Sitemap: https://classicmacdemos.com/sitemap.xml
+
+User-agent: *
+Allow: /
+Disallow: /download/
+Disallow: /explore/
+Disallow: /play/
+Disallow: /rss/
+
+User-agent: CCBot
+User-agent: img2dataset
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Google-Extended
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: ClaudeBot
+User-agent: Omgilibot
+User-agent: Omgili
+User-agent: FacebookBot
+User-agent: Bytespider
+User-agent: magpie-crawler
+User-agent: OAI-SearchBot
+Disallow: /

@@ -1,0 +1,56 @@
+from django.contrib.syndication.views import Feed
+from django.templatetags.static import static
+from .models import Game, Source
+
+class LatestEntriesFeed(Feed):
+    title = "Classic Macintosh Game Demos"
+    link  = "/"
+    description = "Newly added Classic Macintosh game demos and Mac magazine cover CDs from the mid-1990s and early 2000s."
+
+    def items(self): 
+        games = list(Game.objects.order_by("-added")[:10])
+        discs = list(Source.objects.order_by("-added")[:10])
+        items = games + discs
+        sorted_items = sorted(items, key=lambda x: x.added)
+        sorted_items.reverse()
+        return sorted_items
+
+    def item_title(self, item): 
+        if isinstance(item, Game):
+            return item.game
+        elif isinstance(item, Source):
+            return item.description
+
+    def item_enclosure_url(self,item):
+        if isinstance(item, Game):
+            if item.screens > 0:
+                return static(f"demos/%s/screen-1.png" % item.slug)
+            else:
+                return static(f"demos/%s/icon.png" % item.slug)
+        elif isinstance(item, Source):
+            if item.images > 0:
+                return static(f"discs/%s/image-1.png" % item.slug)
+            else:
+                return static("icons/cd-medium.png")
+
+    def item_enclosure_mime_type(self, game): 
+        return "image/png"
+
+    def item_pubdate(self, item): 
+        return item.added 
+
+    def item_description(self, item):
+        description = ''
+        months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Holiday"]
+        if (item.blurb):
+            if isinstance(item, Source) and item.month:
+                description += f"Released %s %s | %s" % (months[item.month], item.year, item.blurb)
+            else:
+                description += f"Released %s | %s" % (item.year, item.blurb)
+        else:
+            if isinstance(item, Source) and item.month:
+                description += f"Released %s %s" % (months[item.month], item.year)
+            else:
+                description += f"Released %s" % item.year
+        description += " <img src=\"{}\">".format(self.item_enclosure_url(item))
+        return description

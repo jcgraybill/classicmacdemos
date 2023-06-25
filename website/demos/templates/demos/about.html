@@ -1,0 +1,48 @@
+{% extends "demos/base.html" %}
+{% block title %}{% block og-title %}{% block tw-title %}About this website | Classic Macintosh Game Demos{% endblock %}{% endblock %}{% endblock %}
+{% block content %}
+<section><article>
+<h4>What is this website?</h4>
+    <p>I'm building a user-friendly way to experience Macintosh videogames from the 1990s "Classic" era. This site collects <b>{{ count }}</b> downloadable game demos, <b>{{ infinitemac.count }}</b> of which can be played directly in a web browser courtesy of <a href="https://infinitemac.org/">Infinite Mac</a>.</p>
+    <p>It also collects <b>{{ sources}}</b> Macintosh CD-ROM images from the Classic Macintosh era, all of which can be launched from the site into an emulated Macintosh at <a href="https://infinitemac.org/">InfiniteMac</a> for easy exploration. The CD-ROM images on this site are a combination of discs I've collected and <a href="https://archive.org/details/@jcgraybill">contributed to Internet Archive</a>, as well as disc images others have contributed to the <a href="https://archive.org/">Internet Archive</a>, <a href="https://macintoshgarden.org">Macintosh Garden</a>, and <a href="https://macintoshrepository.org/">Macintosh Repository</a>.</p>
+<h4>Why play a demo when I could download the full game? 🏴‍☠️</h4>
+    <p>Many of these games aren't abandonware! Remasters and modern adaptations are available for a lot of them, often offering significant quality-of-life improvements. Whenever possible, this site includes links to buy and play the full games, and to modern open-source builds from <a href="https://www.macsourceports.com/">Mac Source Ports</a>. Even the games that are now abandonware often used serial keys, copy protection, or DRM that's a nuisance to work around.  Demos were DRM-free - just click and play!</p>
+<h4>How do I play one of these demos?</h4>
+    <p>In most cases, just click "<span aria-hidden="true" class="fa-solid fa-play"></span> Play at Infinite Mac". If that's not available for a game, play using a Classic-era Macintosh computer or an emulator. The guides at <a href="https://www.emaculation.com/">Emaculation.com</a> are an excellent way to get started with emulators. This site offers an <a href="http://www.classicmacdemos.com/">http-only version</a> accessible to vintage web browsers. Use <a href="https://stuffit.com/">Stuffit Expander</a> to decode and uncompress the downloads. Retro Mac OS X fans can enjoy many of these games in "classic" mode on systems through Mac OS X 10.4 Tiger.</p>
+<h4>How can I support this project?</h4>
+    <p>I don't ask for financial support for this website. Instead, please join me in supporting the people, projects, and communities that make it possible: 
+        <a href="https://archive.org/donate">Internet Archive</a>,
+        <a href="https://github.com/sponsors/mihaip">Infinite Mac</a>,
+        <a href="https://www.patreon.com/macintoshgarden/posts">Macintosh Garden</a>,
+        <a href="https://www.macintoshrepository.org/donate.php">Macintosh Repository</a>,
+        <a href="https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=US&uselang=en">Wikimedia Foundation</a>,
+        <a href="https://www.djangoproject.com/fundraising/">Django</a>,
+        <a href="https://give.thetrevorproject.org/give/484310/#!/donation/checkout">The Trevor Project</a>.
+    </p>
+    <p>Anyone is welcome to contribute to the content on this website. See below for a few areas where help would be appreciated, and <a href="https://oldbytes.space/@kabootie">contact me</a> if you'd like to collaborate on any of these.</p>
+    <h4>Take screenshots of these {{screenshots.count}} games</h4>
+    <p>You might need vintage hardware for this. A lot these games use OpenGL, so I wasn't able to run them in an emulator to take screenshots. I'm trying to generate all original screenshots for this site, rather than grabbing them from other websites. See if you can figure out how to get images for some of these! I generally try to at least include a splashscreen image showing the game's title, an image of the main menu, a handful of gameplay images, a reasonable amount of help/instructions, and any ads or information about the full game.</p>
+    <details><summary>The games</summary>
+    {% include "demos/game_cards.html" with games=screenshots %}
+    </details>
+    <details><summary>These {{ single_screenshot.count }} games only have one screenshot, and could probably use more.</summary>
+        {% include "demos/game_cards.html" with games=single_screenshot %}
+        </details>    
+    <h4>Provide descriptions for these {{blurb.count}} games</h4>
+    <p>If you like writing, this can be fun. A short blurb introducing the game, any interesting facts, and system requirements. Sometimes the people who compiled magazine cover discs provided this kind of description themselves, or there are descriptions of the games in old magazines. If you want to use something like that, great, just please cite the source. I'm generally avoiding reproducing content from Wikipedia, Macintosh Garden, or MobyGames, since the site already provides links to those.</p>
+    <details><summary>The games</summary>
+        {% include "demos/game_cards.html" with games=blurb %}
+    </details>
+        <h4>Make an Infinite Mac disk image for these {{custom_image.count}} games</h4>
+        <p>Some games are playable at <a href="https://infinitemac.org/">Infinite Mac</a>, but the experience is clunkier than it could be. The game mounts in a disk image on the Mac desktop that you need to launch it from. A better experience is a custom bootable image with a minimal System folder and set of extensions, and an alias to the game in Startup Items so it launches automatically at startup, like <a href="{% url 'demos:play' 'marathon-1' %}">this</a>. These {{custom_image.count}} games were added before Infinite Mac supported custom boot images, so they don't take advantage of the better experience that makes possible. Let's fix that! The best way to do this is to create disk images in the <a href="https://blog.persistent.info/2023/09/infinite-mac-improved-persistence.html">Saved HD</a> drive, try booting from it, then send me the exported drive once you get it working.</p>
+        <details><summary>The games</summary>
+            {% include "demos/game_cards.html" with games=custom_image %}
+        </details>
+        <h4>Figure out how to emulate these {{playable.count}} games at Infinite Mac</h4>
+        <p>These are games I haven't been able to get working at <a href="https://infinitemac.org/">Infinite Mac</a> yet. In general, if you can create a bootable image (System Folder + the game) that runs in one of the emulators <a href="https://infinitemac.org/">Infinite Mac</a> uses (currently <a href="https://www.gryphel.com/c/minivmac/">Mini vMac</a>, <a href="https://basilisk.cebix.net/">Basilisk II</a>, <a href="https://sheepshaver.cebix.net/">SheepShaver</a> and <a href="https://github.com/dingusdev/dingusppc">DingusPPC</a>) it will work on the website. Counterintuitively, I find that 68k emulation is faster than PPC emulation, so emulated slower hardware often runs faster. The best way to test is to create disk images in the <a href="https://blog.persistent.info/2023/09/infinite-mac-improved-persistence.html">Saved HD</a> drive, try booting from it, then send me the exported drive.</p>
+        <details><summary>The games</summary>
+            {% include "demos/game_cards.html" with games=playable %}
+        </details>
+    </article>
+</section>
+{% endblock %}

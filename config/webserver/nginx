@@ -1,0 +1,14 @@
+# /etc/logrotate.d/nginx
+/var/log/nginx/*.log {
+    create 0755 nginx root # Lets filebeat read the logs
+    daily
+    rotate 10
+    missingok
+    notifempty
+    compress
+    delaycompress
+    sharedscripts
+    postrotate
+        /bin/kill -USR1 `cat /run/nginx.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}

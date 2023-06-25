@@ -1,0 +1,2 @@
+{% load static %}{% if not request.session.is_old_browser %}<script src="{{ request.scheme }}:{% static 'splide/splide.min.js' %}"></script>
+    <link rel="stylesheet" href="{{ request.scheme }}:{% static 'splide/splide.min.css' %}">{% endif %}

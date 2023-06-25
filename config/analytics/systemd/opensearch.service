@@ -1,0 +1,9 @@
+[Service]
+Type=forking
+Restart=always
+User=ec2-user
+ExecStart=/home/ec2-user/opensearch-2.12.0/bin/opensearch -d -p /var/tmp/opensearch.pid
+PIDFile=/var/tmp/opensearch.pid
+
+[Install]
+WantedBy=multi-user.target

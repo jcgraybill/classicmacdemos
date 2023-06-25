@@ -1,0 +1,78 @@
+{% extends "demos/base.html" %}
+{% load markdown_extras %}
+{% load static %}
+{% block title %}{% block og-title %}{% block tw-title %}{{ game.game }} | Classic Macintosh Game Demos{% endblock %}{% endblock %}{% endblock %}
+{% block description %}{% block og-description %}{% block tw-description %}{% if game.infinite_mac_machine or game.infinite_mac_custom_image %}Play{% else %}Download{% endif %} the {{ game.game }} demo for Classic Mac OS.{% if game.blurb %} {{ game.blurb | markdown | striptags }}{% endif %}{% endblock %}{% endblock %}{% endblock %}
+{% block og-image %}{% block tw-image %}{% if game.screens >= 1 %}{{ request.scheme }}:{% static 'demos' %}/{{ game.slug }}/screen-1.png{% else %}{{ block.super }}{% endif %}{% endblock %}{% endblock %}
+{% block splide %}{% if game.screens > 1 %}{% include "demos/splide.html" %}{% endif %}{% endblock %}
+{% block header %}
+<h1>{{ game.game }}</h1>
+{% if game.aka %}<p>aka <i>{{ game.aka }}</i></p>{% endif %}
+{% endblock %}
+{% block content %}
+<section>
+{% if game.screens == 1 %}
+<aside class="wide" style="border: none;"><img src="{{ request.scheme }}:{% static 'demos' %}/{{ game.slug }}/screen-1.png" alt="Screenshot of {{ game.game}} demo"></aside>
+{% elif game.screens > 1 %}
+<aside class="wide" style="border: none;">
+    <section class="splide" aria-label="Screenshots of {{ game.game}} demo">
+        <div class="splide__track">
+              <ul class="splide__list">
+                {% for screen in screens %}
+                {% if request.session.is_old_browser %}
+                  <li class="splide__slide"><a href="{{ request.scheme }}:{% static 'demos' %}/{{ game.slug }}/screen-{{ screen }}.png">Screenshot {{ screen }} of {{ game.game}} demo</a></li>
+                {% else %}
+                <li class="splide__slide"><img src="{{ request.scheme }}:{% static 'demos' %}/{{ game.slug }}/screen-{{ screen }}.png" alt="Screenshot {{ screen }} of {{ game.game}} demo"></li>
+                {% endif %}
+                {% endfor %}
+                </ul>
+        </div>
+      </section>
+      {% if not request.session.is_old_browser %}
+      <script>
+        new Splide( '.splide', { autoplay: true, rewind: true } ).mount();
+      </script>
+      {% endif %}
+</aside>
+{% endif %}
+<aside style="border: none;">
+        {% if not request.session.is_old_browser %}{% if game.infinite_mac_machine or game.infinite_mac_custom_image %}<div style="text-align:center;"><a href="{% url 'demos:play' game.slug %}"><b><span aria-hidden="true" class="fa-solid fa-play"></span> Play at Infinite Mac</b></a></div>{% endif %}{% endif %}
+        <p>Released for Macintosh {{ game.year }}</p>
+        {% if game.languages.count > 0 %}<p>Language{% if game.languages.count > 1 %}s{% endif %}: {% for language in game.languages.all %}<span title="{{ language.name }}">{% if request.session.is_old_browser %}{{language.name}}{% else %}{{ language.icon }}{% endif %}</span> {% endfor %}</p>{% endif %}
+                {% if game.source_set.count == 1 %}
+                <p>Found on <a href="{% url 'demos:source' game.source_set.get.slug  %}">{{ game.source_set.get.description }}</a></p>
+                {% endif %}
+                {% if game.source_set.count > 1 %}
+                <details>
+                <summary>Found on {{ game.source_set.count }} discs</summary>
+                <ul>
+                {% for source in game.get_sorted_sources %}
+                <li><a href="{% url 'demos:source' source.slug  %}">{{ source.description }}</a></li>
+                {% endfor %}
+                </ul>
+        </details>
+                {% endif %}
+        <p><span aria-hidden="true" class="fa-solid fa-download"></span> <a href="{% url 'demos:download' game.slug %}">Download {{ game.filename }} ({{ game.get_file_size }})</a></p>
+        {% if game.filename_68k %}<p><span aria-hidden="true" class="fa-solid fa-download"></span> <a href="{% url 'demos:download/68k' game.slug %}">Download {{ game.filename_68k }} ({{ game.get_alt_file_size }})</a></p>{% endif %}
+        {% if game.readme_txt %}<p><span aria-hidden="true" class="fa-solid fa-file-lines"></span> <a href="{{ request.scheme }}:{% static 'demos' %}/{{game.slug }}/README.txt">README.txt</a></p>{% endif %}
+        {% if game.readme_html %}<p><span aria-hidden="true" class="fa-solid fa-file-code"></span> <a href="{{ request.scheme }}:{% static 'demos' %}/{{game.slug }}/README.html">README.html</a></p>{% endif %}
+        {% if game.readme_pdf %}<p><span aria-hidden="true" class="fa-solid fa-file-pdf"></span> <a href="{{ request.scheme }}:{% static 'demos' %}/{{game.slug }}/README.pdf">README.pdf</a></p>{% endif %}
+        <div style="max-width: fit-content; margin-left: auto; margin-right: auto;">
+        <div class="icons">
+        {% if game.website_set.get.website %}<a href="{{ game.website_set.get.website }}" title="Website"><img src="{{ request.scheme }}:{% static 'icons/html.png' %}" width="32" height="32" alt="Website"></a>{% endif %}
+        {% if game.website_set.get.wayback_machine %}<a href="{{ game.website_set.get.wayback_machine }}" title="Wayback Machine"><img src="{{ request.scheme }}:{% static 'icons/wayback-machine.png' %}" width="32" height="32" alt="Wayback Machine"></a>{% endif %}
+        {% if game.website_set.get.github %}<a href="{{ game.website_set.get.github }}" title="GitHub"><img src="{{ request.scheme }}:{% static 'icons/github.png' %}" width="32" height="32" alt="GitHub"></a>{% endif %}
+        {% if game.website_set.get.wikipedia %}<a href="{{ game.website_set.get.wikipedia }}" title="Wikipedia"><img src="{{ request.scheme }}:{% static 'icons/wikipedia.png' %}" width="32" height="32" alt="Wikipedia"></a>{% endif %}
+        {% if game.website_set.get.mobygames %}<a href="{{ game.website_set.get.mobygames }}" title="MobyGames"><img src="{{ request.scheme }}:{% static 'icons/mobygames.png' %}" width="32" height="32" alt="MobyGames"></a>{% endif %}
+        {% if game.website_set.get.steam %}<a href="{{ game.website_set.get.steam }}" title="Steam"><img src="{{ request.scheme }}:{% static 'icons/steam.png' %}" width="32" height="32" alt="Steam"></a>{% endif %}
+        {% if game.website_set.get.gog %}<a href="{{ game.website_set.get.gog }}" title="GOG"><img src="{{ request.scheme }}:{% static 'icons/gog.png' %}" width="32" height="32" alt="GOG"></a>{% endif %}
+        {% if game.website_set.get.mac_source_ports %}<a href="{{ game.website_set.get.mac_source_ports }}" title="Mac Source Ports"><img src="{{ request.scheme }}:{% static 'icons/mac-source-ports.png' %}" width="32" height="32" alt="Mac Source Ports"></a>{% endif %}
+        {% if game.website_set.get.macintosh_garden %}<a href="{{ game.website_set.get.macintosh_garden }}" title="Macintosh Garden"><img src="{{ request.scheme }}:{% static 'icons/macintoshgarden.png' %}" width="32" height="32" alt="Macintosh Garden"></a>{% endif %}
+        {% if game.website_set.get.macintosh_repository %}<a href="{{ game.website_set.get.macintosh_repository }}" title="Macintosh Repository"><img src="{{ request.scheme }}:{% static 'icons/macintoshrepository.png' %}" width="32" height="32" alt="Macintosh Repository"></a>{% endif %}
+        </div></div>
+        {% if game.blurb %}<article>{{ game.blurb | markdown | safe }}</article>{% endif %}
+</aside>
+</section>
+{% endblock %}
+{% block footer %}{% if game.contributor %}Contributed by {% if game.contributor_url %}<a href="{{ game.contributor_url }}">{% endif %}{{ game.contributor }}{% if game.contributor_url %}</a>{% endif %}.{% endif %}
+Added {{ game.added }}{% endblock %}

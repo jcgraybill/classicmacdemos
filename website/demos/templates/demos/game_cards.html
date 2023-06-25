@@ -1,0 +1,31 @@
+{% load static %}
+{% if border %}<aside style="text-align: center; {% if clear %}border: none;{% endif %}">{% endif %}
+{% if games.count > 0 %}
+{% if header %}<h3>{{ header }}</h3>{% endif %}
+<div style="text-align: center;">
+    {% for game in games %}
+    {% if request.session.is_old_browser %}
+        <br>
+        <table width="100%"><tr>
+            <td width="32"><a href="{% url 'demos:demo' game.slug %}"><img src="{{ request.scheme }}:{% static 'demos/'%}{{game.slug}}/icon.png" height="32" width="32" alt="{{ game.game }}"></a></td>
+        <td align="left" width="100%"><a href="{% url 'demos:demo' game.slug %}">{{ game.game }}</a><br>{{ game.year }}</td>
+    </tr></table>
+    {% else %}
+    <div class="game-card"><a href="{% url 'demos:demo' game.slug %}"><div style="text-align: left;">
+        <img src="{{ request.scheme }}:{% static 'demos/'%}{{game.slug}}/icon.png" height="32" width="32" alt="{{ game.game }}">
+    <div style="float:inline-start; display:box; width: 190px;">
+        <span class="text">{{ game.game }}<br />{{ game.year }}</span>
+        <span class="icons">
+            {% if game.infinite_mac_machine or game.infinite_mac_custom_image %}<span aria-hidden="true" class="fa-solid fa-play" title="Play"></span><span class="fa-sr-only">Play</span>{% endif %}
+            {% if game.filename %}<span aria-hidden="true" class="fa-solid fa-download" title="Download"></span><span class="fa-sr-only">Download</span>{% endif %}
+            {% if game.filename_68k %}<span aria-hidden="true" class="fa-solid fa-download" title="Alternative download"></span><span class="fa-sr-only">Alternative download</span>{% endif %}
+            {% if game.readme_txt %}<span aria-hidden="true" class="fa-solid fa-file-lines" title="Text"></span><span class="fa-sr-only">Text</span>{% endif %}
+            {% if game.readme_html %}<span aria-hidden="true" class="fa-solid fa-file-code" title="HTML"></span><span class="fa-sr-only">HTML</span>{% endif %}
+            {% if game.readme_pdf %}<span aria-hidden="true" class="fa-solid fa-file-pdf" title="PDF"></span><span class="fa-sr-only">PDF</span>{% endif %}
+        </span>
+    </div>
+    </div></a></div>
+    {% endif %}
+    {% endfor %}
+</div>{% endif %}
+{% if border %}</aside>{% endif %}

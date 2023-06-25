@@ -1,0 +1,11 @@
+[Service]
+User=ec2-user
+Type=forking
+ExecStart=/usr/local/bin/uwsgi --ini /home/ec2-user/classicmacdemos/config/webserver/uwsgi.ini
+PIDFile=/home/ec2-user/uwsgi/uwsgi.pid
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+
+[Install]
+WantedBy=default.target

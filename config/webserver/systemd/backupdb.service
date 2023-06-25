@@ -1,0 +1,11 @@
+[Unit]
+Description=Back up sqlite3 database
+Wants=backupdb.timer
+
+[Service]
+Type=oneshot
+User=ec2-user
+ExecStart=/home/ec2-user/classicmacdemos/config/webserver/backupdb.sh
+
+[Install]
+WantedBy=multi-user.target

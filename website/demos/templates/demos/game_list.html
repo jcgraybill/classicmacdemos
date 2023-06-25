@@ -1,0 +1,6 @@
+{% extends "demos/base.html" %}
+{% load static %}
+{% block title %}{% block og-title %}{% block tw-title %}Games | Classic Macintosh Game Demos{% endblock %}{% endblock %}{% endblock %}
+{% block content %}
+<section>{% include "demos/game_cards.html" with games=game_list %}</section>
+{% endblock %}

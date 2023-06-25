@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+{% if not view.kwargs.nonav %}
+<html lang="en">
+<head>
+    <title>{% block title %}Classic Macintosh Game Demos{% endblock %}</title>
+    <link rel="stylesheet" href="/classicmacdemos.css" />{% if not request.session.is_old_browser %}
+    <link rel="preconnect" href="{{ request.scheme }}://static.classicmacdemos.com" crossorigin>
+    <link rel="icon" href="{{ request.scheme }}:{% static 'icons/hqx.png' %}" />
+    <link rel="apple-touch-icon" href="{% static 'icons/hqx.png' %}" />
+    <link href="{{ request.scheme }}:{% static 'fontawesome/css/fontawesome.min.css' %}" rel="stylesheet">
+    <link href="{{ request.scheme }}:{% static 'fontawesome/css/solid.min.css' %}" rel="stylesheet">
+    <link rel="alternate" type="application/rss+xml" title="New additions: Classic Macintosh Game Demos" href="{% url 'demos:rss' %}" />
+    <meta property="og:title" content="{% block og-title %}Classic Macintosh Game Demos{% endblock %}">
+    <meta name="twitter:title" content="{% block tw-title %}Classic Macintosh Game Demos{% endblock %}">
+    <meta name="description" content="{% block description %}A collection of game demos for vintage Macintosh computers with operating systems through Mac OS 9, especially games from the mid-1990s and early 2000s.{% endblock %}">
+    <meta property="og:description" content="{% block og-description %}A collection of game demos for vintage Macintosh computers with operating systems through Mac OS 9, especially games from the mid-1990s and early 2000s.{% endblock %}">
+    <meta name="twitter:description" content="{% block tw-description %}A collection of game demos for vintage Macintosh computers with operating systems through Mac OS 9, especially games from the mid-1990s and early 2000s.{% endblock %}">
+    <meta property="og:image" content="{% block og-image %}{{ request.scheme }}:{% static 'icons/splash.png' %}{% endblock %}">
+    <meta name="twitter:image" content="{% block tw-image %}{{ request.scheme }}:{% static 'icons/splash.png' %}{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="classicmacdemos.com">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function change_nav(checkboxElem) {
+         var a = document.createElement('a');
+         a.target="htmz";
+         if (checkboxElem.checked) {
+          a.href="{% url 'demos:sources_nn' %}#tab-panel";
+          window.history.pushState({}, '', '{% url "demos:sources" %}')
+        } else {
+          a.href="{% url 'demos:games_nn' %}#tab-panel";
+          window.history.pushState({}, '', '{% url "demos:games" %}')
+         }
+         a.click();
+        }
+    </script>
+    {% block splide %}{% endblock %}{% endif %}
+</head>
+<body>
+    {% if request.session.is_old_browser %}<h1><a href="{% url 'demos:home' %}">Classic Macintosh Game Demos</a></h1>{% else %}
+    <iframe hidden name=htmz onload="setTimeout(()=>document.querySelector(contentWindow.location.hash||null)?.replaceWith(...contentDocument.body.childNodes))"></iframe>
+    <header><nav><div class="navbar">
+        <a href="{% url 'demos:home' %}"><img alt="Classic Macintosh Game Demos" src="{{ request.scheme }}:{% static 'icons/hqx.png' %}" height="32" width="32" title="Home"></a>
+        <div class="sitename"><a href="{% url 'demos:home' %}">Classic Macintosh<br>Game Demos</a></div>
+        <div class="the-control">
+            <div class="button">
+             <input type="checkbox" class="checkbox" onchange="change_nav(this);" {% if tab == "discs" %}checked {% endif %}/>
+             <div class="slider">
+              <span>Games</span>
+             </div>
+             <div class="background"></div>
+            </div>
+           </div>           
+           <div>
+            <a rel="me" href="https://oldbytes.space/@classicmacdemos" title="Follow this site on Mastodon"><img src="{{ request.scheme }}:{% static 'icons/mastodon.png' %}" height="21" width="20" alt="Follow this site on Mastodon"></a>
+            <a href="{% url 'demos:rss' %}" title="RSS"><img src="{{ request.scheme }}:{% static 'icons/rss.png' %}" height="20" width="20" alt="RSS"></a>
+        </div>
+    </div></nav></header>
+    {% endif %}
+{% endif %}
+<div id="tab-panel" role="tabpanel">
+<main>
+<header>{% block header %}{% endblock %}</header>
+{% block content %}{% endblock %}
+</main>
+<footer><section><p>{% block footer %}{% endblock %} <a href="{% url 'demos:about' %}">About this website</a></p></section></footer>
+</div>
+{% if not view.kwargs.nonav %}
+</body>
+</html>
+{% endif %}

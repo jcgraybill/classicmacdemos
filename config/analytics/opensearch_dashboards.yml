@@ -1,0 +1,4 @@
+opensearchDashboards.survey.url: "false"
+server.host: "0.0.0.0"
+server.basePath: "/analytics"
+server.rewriteBasePath: true

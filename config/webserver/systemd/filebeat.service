@@ -1,0 +1,8 @@
+[Service]
+Type=simple
+Restart=always
+User=ec2-user
+ExecStart=/home/ec2-user/filebeat-7.12.1-linux-arm64/filebeat -c /home/ec2-user/classicmacdemos/config/webserver/filebeat.yml run
+
+[Install]
+WantedBy=multi-user.target
