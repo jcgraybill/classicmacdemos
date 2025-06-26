@@ -24,17 +24,20 @@ class LatestEntriesFeed(Feed):
     def item_enclosure_url(self,item):
         if isinstance(item, Game):
             if item.screens > 0:
-                return static(f"demos/%s/screen-1.png" % item.slug)
+                return 'https:' + static(f"demos/%s/screen-1.png" % item.slug)
             else:
-                return static(f"demos/%s/icon.png" % item.slug)
+                return 'https:' + static(f"demos/%s/icon.png" % item.slug)
         elif isinstance(item, Source):
             if item.images > 0:
-                return static(f"discs/%s/image-1.png" % item.slug)
+                return 'https:' + static(f"discs/%s/image-1.png" % item.slug)
             else:
-                return static("icons/cd-medium.png")
+                return 'https:' + static("icons/cd-medium.png")
 
     def item_enclosure_mime_type(self, game): 
         return "image/png"
+    
+    def item_enclosure_length(self):
+        return 1
 
     def item_pubdate(self, item): 
         return item.added 
