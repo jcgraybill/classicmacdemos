@@ -5,7 +5,6 @@ Allow: /
 Disallow: /download/
 Disallow: /explore/
 Disallow: /play/
-Disallow: /rss/
 
 User-agent: CCBot
 User-agent: img2dataset
