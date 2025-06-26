@@ -7,6 +7,9 @@ class LatestEntriesFeed(Feed):
     link  = "/"
     description = "Newly added Classic Macintosh game demos and Mac magazine cover CDs from the mid-1990s and early 2000s."
 
+    def feed_url(self):
+        return "https://classicmacdemos.com/rss/"
+
     def items(self): 
         games = list(Game.objects.order_by("-added")[:10])
         discs = list(Source.objects.order_by("-added")[:10])
