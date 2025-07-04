@@ -20,6 +20,7 @@ class DetectOldBrowser:
             'Mac OS X 10.7',
             'Mac OS X 10_7',
             'BeOS',
+            'cghmn-google-crawler',
         )
 
     def is_old_browser(self,user_agent):
