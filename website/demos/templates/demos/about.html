@@ -19,12 +19,7 @@
         <a href="https://www.djangoproject.com/fundraising/">Django</a>, and
         <a href="https://give.thetrevorproject.org/give/484310/#!/donation/checkout">The Trevor Project</a>.
     </p>
-<h4>What's on your to-do list?</h4>
-<ol>
-<li>Take screenshots of these {{screenshots.count}} games
-    {% include "demos/game_cards.html" with games=screenshots %}</li>
-<li>Make an Infinite Mac disk image for these {{custom_image.count}} games
+<h4>Which {{custom_image.count}} games still need an Infinite Mac custom disk image?</h4>
     {% include "demos/game_cards.html" with games=custom_image %}</li>
-</ol>
 </section>
 {% endblock %}
