@@ -141,8 +141,6 @@ class Source(models.Model):
     slug = models.SlugField(null=False, unique=True)
     disc2_url = models.URLField("Disc 2 Webpage", blank=True)
     disc2_infinite_mac_url = models.URLField("Disc 2 ISO/DMG URL", max_length=500, blank=True)
-    disc2_virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_disc2_virtual_machine", on_delete=models.SET_NULL, null=True, verbose_name="Disc 2 Virtual machine", limit_choices_to=~Q(disk__exact=''))
-    disc2_osx_virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_disc2_osx_virtual_machine", on_delete=models.SET_NULL, null=True, verbose_name="Disc 2 Mac OS X Virtual machine", limit_choices_to=~Q(disk__exact=''))
     added = models.DateTimeField("Added", default=django.utils.timezone.now)
     def __str__(self): return self.description
     def get_absolute_url(self): return reverse("demos:source", kwargs={ "slug": self.slug })
