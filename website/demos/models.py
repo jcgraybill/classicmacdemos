@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.db.models import Min, Max, Count
+from django.db.models import Min, Max, Count, Q
 
 import django, math, boto3
 
@@ -28,7 +28,6 @@ def convert_size(size_bytes):
    s = round(size_bytes / p, 2)
    return "%s %s" % (s, size_name[i])
 
-
 class Months(models.IntegerChoices):
     JAN = 1
     FEB = 2
@@ -44,6 +43,12 @@ class Months(models.IntegerChoices):
     DEC = 12
     Holiday = 13
 
+class VirtualMachine(models.Model):
+    description = models.CharField("Description", max_length=50, blank=False)
+    machine     = models.CharField("Machine configuration", max_length=100, blank=False)
+    disk        = models.CharField("Disk name", max_length=50, blank=True)
+    def __str__(self): return self.description
+
 class Language(models.Model):
     name = models.CharField("Name", max_length=50, blank=False)
     iso  = models.CharField("ISO 639-1 Code", max_length=2, blank=False)
@@ -58,6 +63,7 @@ class Country (models.Model):
     def __str__(self): return self.name
 
 class Game(models.Model):
+    s3 = boto3.client('s3')
     game = models.CharField("Game", max_length=200)
     aka  = models.CharField("aka", max_length=200, blank=True)
     contributor = models.CharField("Contributed by", max_length=200, blank=True)
@@ -73,6 +79,7 @@ class Game(models.Model):
     slug = models.SlugField(null=False, unique=True)
     screens = models.IntegerField("Screenshots", default=0)
     blurb = models.TextField("Blurb", blank=True)
+    virtual_machine = models.ForeignKey(VirtualMachine, on_delete=models.SET_NULL, null=True, limit_choices_to=Q(disk__exact=''))
     infinite_mac_machine = models.CharField("Infinite Mac Prebuilt Machine", choices=MACHINES, max_length=200, blank=True, default=False)
     infinite_mac_custom_image = models.CharField("Infinite Mac Custom Image", choices=CUSTOM_IMAGE_MACHINES, max_length=200, blank=True, default=False)
     def __str__(self): return self.game
@@ -81,16 +88,18 @@ class Game(models.Model):
     def get_file_size(self): return self.getsize(self.filename)
     def get_alt_file_size(self): return self.getsize(self.filename_68k)
     def getsize(self, filename):
-        s3 = boto3.client('s3')
-        head = s3.head_object(
-            Bucket = "download.classicmacdemos.com",
-            Key = filename
-        )
-        return convert_size(head["ContentLength"])
+        try:
+            head = self.s3.head_object(
+                Bucket = "download.classicmacdemos.com",
+                Key = filename
+            )
+            return convert_size(head["ContentLength"])
+        except:
+            return 0
 
 class Magazine(models.Model):
     magazine = models.CharField("Magazine", max_length=200)
-    country = models.ForeignKey(Country, on_delete=models.DO_NOTHING, null=True)
+    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
     url = models.URLField("Webpage", blank=True)
     slug = models.SlugField(null=False, unique=True)
     blurb = models.TextField("Blurb", blank=True)
@@ -109,7 +118,7 @@ class Magazine(models.Model):
 
 class Source(models.Model):
     game = models.ManyToManyField(Game, blank=True)
-    magazine = models.ForeignKey(Magazine, null=True, on_delete=models.DO_NOTHING)
+    magazine = models.ForeignKey(Magazine, null=True, on_delete=models.SET_NULL)
     description = models.CharField("Description", max_length=200)
     contributor = models.CharField("Contributed by", max_length=200, blank=True)
     contributor_url = models.URLField("Contributor URL", blank=True)
@@ -117,6 +126,8 @@ class Source(models.Model):
     magazine_url = models.URLField("Magazine URL", blank=True)
     magazine_embed_url = models.URLField("Embeddable Magazine URL", blank=True)
     infinite_mac_url = models.URLField("ISO/DMG URL", max_length=500, blank=True)
+    virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_virtual_machine", on_delete=models.SET_NULL, null=True, limit_choices_to=~Q(disk__exact=''))
+    osx_virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_osx_virtual_machine",on_delete=models.SET_NULL, null=True, verbose_name="Mac OS X Virtual machine", limit_choices_to=~Q(disk__exact=''))
     infinite_mac_machine = models.CharField("Infinite Mac Machine", choices=MACHINES, max_length=200, blank=True, default=False)
     infinite_mac_osx_machine = models.CharField("Infinite Mac OS X Machine", choices=MACHINES, max_length=200, blank=True, default=False)
     year = models.IntegerField("Year", blank=True, default=2000, null=True)
@@ -130,6 +141,8 @@ class Source(models.Model):
     slug = models.SlugField(null=False, unique=True)
     disc2_url = models.URLField("Disc 2 Webpage", blank=True)
     disc2_infinite_mac_url = models.URLField("Disc 2 ISO/DMG URL", max_length=500, blank=True)
+    disc2_virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_disc2_virtual_machine", on_delete=models.SET_NULL, null=True, verbose_name="Disc 2 Virtual machine", limit_choices_to=~Q(disk__exact=''))
+    disc2_osx_virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_disc2_osx_virtual_machine", on_delete=models.SET_NULL, null=True, verbose_name="Disc 2 Mac OS X Virtual machine", limit_choices_to=~Q(disk__exact=''))
     added = models.DateTimeField("Added", default=django.utils.timezone.now)
     def __str__(self): return self.description
     def get_absolute_url(self): return reverse("demos:source", kwargs={ "slug": self.slug })

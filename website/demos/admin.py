@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from .models import Game, Website, Source, Language, Magazine, Country
+from .models import Game, Website, Source, Language, Magazine, Country, VirtualMachine
 
 class WebsiteInline(admin.StackedInline):
     model = Website
@@ -39,6 +39,9 @@ class SourceAdmin(admin.ModelAdmin):
 class LanguageAdmin(admin.ModelAdmin):
     pass
 
+class VirtualMachineAdmin(admin.ModelAdmin):
+    pass
+
 class CountryAdmin(admin.ModelAdmin):
     list_display=["name", "iso", "icon", "display_order"]
 
@@ -50,3 +53,4 @@ admin.site.register(Magazine, MagazineAdmin)
 admin.site.register(Source, SourceAdmin)
 admin.site.register(Language,LanguageAdmin)
 admin.site.register(Country, CountryAdmin)
+admin.site.register(VirtualMachine, VirtualMachineAdmin)
