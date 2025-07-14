@@ -3,12 +3,12 @@
 {% block content %}
 <section><article>
 <h4>What is this website?</h4>
-    <p>I'm building a user-friendly way to experience Macintosh videogames from the 1990s "Classic" era. This site collects <b>{{ count }}</b> downloadable game demos, <b>{{ infinitemac.count }}</b> of which can be played directly in a web browser courtesy of <a href="https://infinitemac.org/">Infinite Mac</a>.</p>
-    <p>It also collects <b>{{ sources}}</b> Macintosh CD-ROM images from the Classic Macintosh era, all of which can be launched from the site into an emulated Macintosh at <a href="https://infinitemac.org/">InfiniteMac</a> for easy exploration. The CD-ROM images on this site are a combination of discs I've collected and <a href="https://archive.org/details/@jcgraybill">contributed to Internet Archive</a>, as well as disc images others have contributed to the <a href="https://archive.org/">Internet Archive</a>, <a href="https://macintoshgarden.org">Macintosh Garden</a>, and <a href="https://macintoshrepository.org/">Macintosh Repository</a>.</p>
+    <p>I'm building a user-friendly way to experience Macintosh videogames from the 1990s "Classic" era. This site collects <b>{{ count }}</b> downloadable game demos, <b>{{ infinitemac }}</b> of which can be played directly in a web browser courtesy of <a href="https://infinitemac.org/">Infinite Mac</a>.</p>
+    <p>It also collects <b>{{ sources }}</b> Macintosh CD-ROM images from the Classic Macintosh era, all of which can be explored live in an emulated Macintosh, also thanks to <a href="https://infinitemac.org/">InfiniteMac</a>. The CD-ROM images on this site are a combination of discs I've collected and <a href="https://archive.org/details/@jcgraybill">contributed to Internet Archive</a>, as well as disc images others have contributed to the <a href="https://archive.org/">Internet Archive</a>, <a href="https://macintoshgarden.org">Macintosh Garden</a>, and <a href="https://macintoshrepository.org/">Macintosh Repository</a>.</p>
 <h4>Why play a demo when I could download the full game? 🏴‍☠️</h4>
     <p>Many of these games aren't abandonware! Remasters and modern adaptations are available for a lot of them, often offering significant quality-of-life improvements. Whenever possible, this site includes links to buy and play the full games, and to modern open-source builds from <a href="https://www.macsourceports.com/">Mac Source Ports</a>. Even the games that are now abandonware often used serial keys, copy protection, or DRM that's a nuisance to work around.  Demos were DRM-free - just click and play!</p>
 <h4>How do I play one of these demos?</h4>
-    <p>In most cases, just click "<span aria-hidden="true" class="fa-solid fa-play"></span> Play at Infinite Mac". If that's not available for a game, play using a Classic-era Macintosh computer or an emulator. The guides at <a href="https://www.emaculation.com/">Emaculation.com</a> are an excellent way to get started with emulators. This site offers an <a href="http://www.classicmacdemos.com/">http-only version</a> accessible to vintage web browsers. Use <a href="https://stuffit.com/">Stuffit Expander</a> to decode and uncompress the downloads. Retro Mac OS X fans can enjoy many of these games in "classic" mode on systems through Mac OS X 10.4 Tiger.</p>
+    <p>In most cases, simply click "<span aria-hidden="true" class="fa-solid fa-play"></span> Play". If no <span aria-hidden="true" class="fa-solid fa-play"></span> Play button is available for a game, it can still be downloaded and played using a Classic-era Macintosh computer or an emulator. The guides at <a href="https://www.emaculation.com/">Emaculation.com</a> are an excellent way to get started with emulators. This site offers an <a href="http://www.classicmacdemos.com/">http-only version</a> accessible to vintage web browsers. Use <a href="https://stuffit.com/">Stuffit Expander</a> to decode and uncompress the downloads. Retro Mac OS X fans can enjoy many of these games in "Classic" mode on systems running Mac OS versions up to and including Mac OS X 10.4 Tiger.</p>
 <h4>What are some good causes I can support?</h4>
     <p>Thanks for asking. A few that were helpful to me while building this site include
         <a href="https://archive.org/donate">Internet Archive</a>,
@@ -19,7 +19,5 @@
         <a href="https://www.djangoproject.com/fundraising/">Django</a>, and
         <a href="https://give.thetrevorproject.org/give/484310/#!/donation/checkout">The Trevor Project</a>.
     </p>
-<h4>Which {{custom_image.count}} games still need an Infinite Mac custom disk image?</h4>
-    {% include "demos/game_cards.html" with games=custom_image %}</li>
 </section>
 {% endblock %}

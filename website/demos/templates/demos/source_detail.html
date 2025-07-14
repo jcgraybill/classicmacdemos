@@ -24,15 +24,19 @@
 {% endif %}
 {% endif %}
 {% if not request.session.is_old_browser %}
-{% if source.infinite_mac_url and source.infinite_mac_machine %}<a href="{% url 'demos:explore' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore in your browser at Infinite Mac</b></a>{% endif %}
-{% if source.infinite_mac_url and source.infinite_mac_osx_machine %}<a href="{% url 'demos:explore/osx' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Explore in your browser at Infinite Mac (Mac OS X)</b></a>{% endif %}
+ <script>
+  function launch_emulator(url) { document.getElementById("infinite_mac_embed").innerHTML = '<iframe src="' + url + '" width="640" height="480" allow="cross-origin-isolated" frameborder="0"></iframe>'; }
+</script>
+{% if source.infinite_mac_url and source.virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore the disc</b></a>{% endif %}
+{% if source.infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Explore the disc (Mac OS X)</b></a>{% endif %}
 {% if source.disc2_url %}<br><a href="{{ source.disc2_url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get disc 2</b></a>{% endif %}
-{% if source.disc2_infinite_mac_url and source.infinite_mac_machine %}<a href="{% url 'demos:explore/alt' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 2 at Infinite Mac</b></a>{% endif %}
-{% if source.disc2_infinite_mac_url and source.infinite_mac_osx_machine %}<a href="{% url 'demos:explore/alt/osx' source.slug %}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Explore disc 2 at Infinite Mac (Mac OS X)</b></a>{% endif %}
+{% if source.disc2_infinite_mac_url and source.virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/alt' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 2</b></a>{% endif %}
+{% if source.disc2_infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/alt/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Explore disc 2 (Mac OS X)</b></a>{% endif %}
 {% endif %}
 </section>
 {% endblock %}
 {% block content %}
+<section id="infinite_mac_embed"></section>
 <section>
 {% if source.blurb or source.images > 0 or source.magazine_embed_url %}
 <aside class="wide" style="border: none;">

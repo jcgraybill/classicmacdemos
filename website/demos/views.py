@@ -19,7 +19,7 @@ class GameListView(generic.ListView):
                   "game": "slug",   # I don't love this hack for case/punctuation insensitive sorting
                   "-game": "-slug"}
         if 'constraint' in self.kwargs and self.kwargs['constraint'] == 'playable':
-            return Game.objects.exclude( Q(infinite_mac_machine='') & Q(infinite_mac_custom_image='')).order_by('slug')
+            return Game.objects.filter(virtual_machine__isnull=False).order_by('slug')
         else:
             if self.kwargs['order'] in orders.keys():
                 order = orders[self.kwargs['order']]
@@ -70,18 +70,9 @@ def download(request, slug, mc68k):
 
 def play(request,slug):
     game = get_object_or_404(Game, slug=slug)
-    if game.infinite_mac_custom_image != '':
-        url = "https://infinitemac.org/run?cdrom=https://img.classicmacdemos.com/{slug}.dsk&machine={infinite_mac_custom_image}&saved_hd=true".format(
-            infinite_mac_custom_image = game.infinite_mac_custom_image,
-            slug = slug
-        )
-        p, _ = game.play_set.get_or_create()
-        p.plays += 1
-        p.save()
-        return redirect(url)
-    elif game.infinite_mac_machine != '':
-        url = "https://infinitemac.org/{infinite_mac_machine}&cdroms=true&cdrom_url=https://img.classicmacdemos.com/{slug}.img&saved_hd=true".format(
-            infinite_mac_machine = game.infinite_mac_machine,
+    if game.virtual_machine:
+        url = "https://infinitemac.org/embed?disk_url=https://img.classicmacdemos.com/{slug}.dsk&machine={virtual_machine}".format(
+            virtual_machine = game.virtual_machine.machine,
             slug = slug
         )
         p, _ = game.play_set.get_or_create()
@@ -93,44 +84,35 @@ def play(request,slug):
 
 def explore(request, slug: str, alt: bool, osx: bool):
     source = get_object_or_404(Source, slug=slug)
-    infinite_mac_machine = source.infinite_mac_osx_machine if osx else source.infinite_mac_machine
-    infinite_mac_url = source.disc2_infinite_mac_url if alt else source.infinite_mac_url
+    virtual_machine = source.osx_virtual_machine if osx else source.virtual_machine
+    cdrom_url = source.disc2_infinite_mac_url if alt else source.infinite_mac_url
     
-    if not (infinite_mac_machine and infinite_mac_url): 
+    if not (virtual_machine and cdrom_url): 
         return HttpResponseNotFound()
 
     e, _ = source.explore_set.get_or_create()
     e.explores += 1
     e.save()
 
-    url = "https://infinitemac.org/{infinite_mac_machine}&cdroms=true&cdrom_url={infinite_mac_url}&saved_hd=true".format(
-        infinite_mac_machine = infinite_mac_machine,
-        infinite_mac_url = infinite_mac_url
+    url = "https://infinitemac.org/embed?machine={virtual_machine}&disk={virtual_machine_disk}&cdrom={cdrom_url}&infinite_hd=true".format(
+        virtual_machine = virtual_machine.machine,
+        virtual_machine_disk = virtual_machine.disk,
+        cdrom_url = cdrom_url
     )
 
     return redirect(url)
-
 
 def about(request):
     context = dict()
     context["count"] = Game.objects.count()
     context["sources"] = Source.objects.count()
-    context["infinitemac"] = Game.objects.exclude( Q(infinite_mac_machine='') & Q(infinite_mac_custom_image='')).order_by("-play__plays")
-    context["screenshots"] = Game.objects.exclude(screens__gte=1).order_by("slug")
-    context["single_screenshot"] = Game.objects.filter(screens__exact=1).order_by("slug")
-    context["blurb"] = Game.objects.filter(blurb__exact='').order_by("slug")
-    context["playable"] = Game.objects.filter( Q(infinite_mac_machine='') & Q(infinite_mac_custom_image='')).order_by("slug")
-    context["custom_image"] = Game.objects.exclude(Q(infinite_mac_machine='')).order_by("slug")
+    context["infinitemac"] = Game.objects.filter(virtual_machine__isnull=False).count()
     return render(request, "demos/about.html", context)
 
 def home(request):
     context = dict()
-    context["recent"] = Game.objects.order_by("-added")
-    context["downloads"] = Game.objects.all().order_by("-download__downloads")
-    context["infinitemac"] = Game.objects.exclude( Q(infinite_mac_machine='') & Q(infinite_mac_custom_image='')).order_by("-play__plays")
-    featured = Game.objects.filter(screens__gte=1).exclude(blurb__exact='').exclude(infinite_mac_custom_image__exact='')
-    datesum = date.today().year + date.today().month + date.today().day
-    context["featured"] = featured[datesum % featured.count()]
+    context["downloads"] = Game.objects.order_by("-download__downloads")
+    context["infinitemac"] = Game.objects.filter(virtual_machine__isnull=False).order_by("-play__plays")
     context["discs"] = Source.objects.order_by('-added')
     return render(request,"demos/home.html", context)
 

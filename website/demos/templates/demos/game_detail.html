@@ -2,7 +2,7 @@
 {% load markdown_extras %}
 {% load static %}
 {% block title %}{% block og-title %}{% block tw-title %}{{ game.game }} | Classic Macintosh Game Demos{% endblock %}{% endblock %}{% endblock %}
-{% block description %}{% block og-description %}{% block tw-description %}{% if game.infinite_mac_machine or game.infinite_mac_custom_image %}Play{% else %}Download{% endif %} the {{ game.game }} demo for Classic Mac OS.{% if game.blurb %} {{ game.blurb | markdown | striptags }}{% endif %}{% endblock %}{% endblock %}{% endblock %}
+{% block description %}{% block og-description %}{% block tw-description %}{% if game.virtual_machine %}Play{% else %}Download{% endif %} the {{ game.game }} demo for Classic Mac OS.{% if game.blurb %} {{ game.blurb | markdown | striptags }}{% endif %}{% endblock %}{% endblock %}{% endblock %}
 {% block og-image %}{% block tw-image %}{% if game.screens >= 1 %}{{ request.scheme }}:{% static 'demos' %}/{{ game.slug }}/screen-1.png{% else %}{{ block.super }}{% endif %}{% endblock %}{% endblock %}
 {% block splide %}{% if game.screens > 1 %}{% include "demos/splide.html" %}{% endif %}{% endblock %}
 {% block header %}
@@ -10,6 +10,7 @@
 {% if game.aka %}<p>aka <i>{{ game.aka }}</i></p>{% endif %}
 {% endblock %}
 {% block content %}
+<section id="infinite_mac_embed"></section>
 <section>
 {% if game.screens == 1 %}
 <aside class="wide" style="border: none;"><img src="{{ request.scheme }}:{% static 'demos' %}/{{ game.slug }}/screen-1.png" alt="Screenshot of {{ game.game}} demo"></aside>
@@ -36,7 +37,14 @@
 </aside>
 {% endif %}
 <aside style="border: none;">
-        {% if not request.session.is_old_browser %}{% if game.infinite_mac_machine or game.infinite_mac_custom_image %}<div style="text-align:center;"><a href="{% url 'demos:play' game.slug %}"><b><span aria-hidden="true" class="fa-solid fa-play"></span> Play at Infinite Mac</b></a></div>{% endif %}{% endif %}
+{% if not request.session.is_old_browser %}
+{% if game.virtual_machine %}
+ <script>
+  function launch_emulator() { document.getElementById("infinite_mac_embed").innerHTML = '<iframe src="{% url "demos:play" game.slug %}" width="640" height="480" allow="cross-origin-isolated" frameborder="0"></iframe>'; }
+</script>
+<div style="text-align:center;"><a href="#" onclick="launch_emulator()"><b><span aria-hidden="true" class="fa-solid fa-play"></span> Play</b></a></div>
+{% endif %}
+{% endif %}
         <p>Released for Macintosh {{ game.year }}</p>
         {% if game.languages.count > 0 %}<p>Language{% if game.languages.count > 1 %}s{% endif %}: {% for language in game.languages.all %}<span title="{{ language.name }}">{% if request.session.is_old_browser %}{{language.name}}{% else %}{{ language.icon }}{% endif %}</span> {% endfor %}</p>{% endif %}
                 {% if game.source_set.count == 1 %}

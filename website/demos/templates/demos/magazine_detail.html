@@ -25,7 +25,7 @@
     {% if source.disc2_url or source.disc2_infinite_mac_url %}<span aria-hidden="true" class="fa-solid fa-compact-disc" title="CD"></span><span class="fa-sr-only">CD 2</span>{% endif %}
     {% if source.url or source.disc2_url or source.disc2_infinite_mac_url %} | {% endif %} 
     {% if source.magazine_url or source.magazine_embed_url %}<span aria-hidden="true" class="fa-solid fa-book-open" title="Read"></span><span class="fa-sr-only">Read</span> | {% endif %}
-    {% if source.infinite_mac_url and source.infinite_mac_machine %}<span aria-hidden="true" class="fa-solid fa-magnifying-glass" title="Explore"></span><span class="fa-sr-only">Explore</span> | {% endif %}
+    {% if source.infinite_mac_url and source.virtual_machine %}<span aria-hidden="true" class="fa-solid fa-magnifying-glass" title="Explore"></span><span class="fa-sr-only">Explore</span> | {% endif %}
     <span aria-hidden="true" class="fa-solid fa-download" title="Demos"></span><span class="fa-sr-only">Demos</span> {{ source.game.all.count }} | 
     <span aria-hidden="true" class="fa-solid fa-play" title="Play"></span><span class="fa-sr-only">Play</span> {{ source.playable_games.count }}
     </div>

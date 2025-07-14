@@ -16,7 +16,7 @@
     <div style="float:inline-start; display:box; width: 190px;">
         <span class="text">{{ game.game }}<br />{{ game.year }}</span>
         <span class="icons">
-            {% if game.infinite_mac_machine or game.infinite_mac_custom_image %}<span aria-hidden="true" class="fa-solid fa-play" title="Play"></span><span class="fa-sr-only">Play</span>{% endif %}
+            {% if game.virtual_machine %}<span aria-hidden="true" class="fa-solid fa-play" title="Play"></span><span class="fa-sr-only">Play</span>{% endif %}
             {% if game.filename %}<span aria-hidden="true" class="fa-solid fa-download" title="Download"></span><span class="fa-sr-only">Download</span>{% endif %}
             {% if game.filename_68k %}<span aria-hidden="true" class="fa-solid fa-download" title="Alternative download"></span><span class="fa-sr-only">Alternative download</span>{% endif %}
             {% if game.readme_txt %}<span aria-hidden="true" class="fa-solid fa-file-lines" title="Text"></span><span class="fa-sr-only">Text</span>{% endif %}
