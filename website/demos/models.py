@@ -4,21 +4,6 @@ from django.db.models import Min, Max, Count, Q
 
 import django, math, boto3
 
-DEFAULT_MACHINE = ''
-MACHINES = [
-    ( DEFAULT_MACHINE, 'NONE' ),
-    ( '1996/System 7.5.3?machine=Quadra+650', '68040 System 7.5.3' ),
-    ( '1998/Mac OS 8.1?machine=Power+Macintosh+9500', 'PowerPC 604 Mac OS 8.1'),
-    ( '1999/Mac OS 9.0?machine=Power+Macintosh+9500', 'PowerPC 604 Mac OS 9.0'),
-    ( '2001/Mac OS X 10.1?machine=Power+Macintosh+G3+(Beige)', 'Mac OS X 10.1')
-]
-CUSTOM_IMAGE_MACHINES = [
-    ( DEFAULT_MACHINE, 'NONE' ),
-    ( 'Quadra+650', 'Quadra 650'),
-    ( 'Power+Macintosh+9500&ram=32M', 'Power Macintosh 9500'),
-    ( 'Power+Macintosh+9500&ram=64M', 'Power Macintosh 9500 64MB')
-]
-
 def convert_size(size_bytes):
    if size_bytes == 0:
        return "0B"
@@ -80,8 +65,6 @@ class Game(models.Model):
     screens = models.IntegerField("Screenshots", default=0)
     blurb = models.TextField("Blurb", blank=True)
     virtual_machine = models.ForeignKey(VirtualMachine, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to=Q(disk__exact=''))
-    infinite_mac_machine = models.CharField("Infinite Mac Prebuilt Machine", choices=MACHINES, max_length=200, blank=True, default=False)
-    infinite_mac_custom_image = models.CharField("Infinite Mac Custom Image", choices=CUSTOM_IMAGE_MACHINES, max_length=200, blank=True, default=False)
     def __str__(self): return self.game
     def get_absolute_url(self): return reverse("demos:demo", kwargs={ "slug": self.slug })
     def get_sorted_sources(self): return self.source_set.all().order_by('description')
@@ -128,8 +111,6 @@ class Source(models.Model):
     infinite_mac_url = models.URLField("ISO/DMG URL", max_length=500, blank=True)
     virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_virtual_machine", on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to=~Q(disk__exact=''))
     osx_virtual_machine = models.ForeignKey(VirtualMachine, related_name="source_osx_virtual_machine",on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Mac OS X Virtual machine", limit_choices_to=~Q(disk__exact=''))
-    infinite_mac_machine = models.CharField("Infinite Mac Machine", choices=MACHINES, max_length=200, blank=True, default=False)
-    infinite_mac_osx_machine = models.CharField("Infinite Mac OS X Machine", choices=MACHINES, max_length=200, blank=True, default=False)
     year = models.IntegerField("Year", blank=True, default=2000, null=True)
     month = models.IntegerField("Month", blank=True, choices=Months.choices, default=None, null=True)
     disc = models.IntegerField("Disc #", blank=True, default=None, null=True)
@@ -145,10 +126,7 @@ class Source(models.Model):
     def __str__(self): return self.description
     def get_absolute_url(self): return reverse("demos:source", kwargs={ "slug": self.slug })
     def get_sorted_games(self): return self.game.all().order_by('slug')
-    def playable_games(self): 
-        imm = self.game.exclude(infinite_mac_machine='')
-        imci = self.game.exclude(infinite_mac_custom_image='')
-        return imm.union(imci)
+    def playable_games(self): return self.game.filter(virtual_machine__isnull=False)
     class Meta:
         ordering = ['magazine','year', 'month', 'volume', 'issue_number', 'disc']
 
