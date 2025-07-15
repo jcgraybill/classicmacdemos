@@ -25,7 +25,35 @@
 {% endif %}
 {% if not request.session.is_old_browser %}
  <script>
-  function launch_emulator(url) { document.getElementById("infinite_mac_embed").innerHTML = '<iframe src="' + url + '" width="640" height="480" allow="cross-origin-isolated" frameborder="0"></iframe>'; }
+  function go_fullscreen() {
+    the_frame = document.getElementById("infinite_mac_embed_frame");
+      if (the_frame.requestFullscreen) {
+          the_frame.requestFullscreen();
+      } else if (the_frame.mozRequestFullScreen) { // Firefox
+          the_frame.mozRequestFullScreen();
+      } else if (the_frame.webkitRequestFullscreen) { // Chrome, Safari and Opera
+          the_frame.webkitRequestFullscreen();
+      } else if (the_frame.msRequestFullscreen) { // IE/Edge
+          the_frame.msRequestFullscreen();
+      }
+  }
+  function close_emulator() {
+    the_frame = document.getElementById("infinite_mac_embed");
+    the_frame.innerHTML = "";
+  }
+  function launch_emulator(url) { 
+    document.getElementById("infinite_mac_embed").innerHTML = `
+    <div class="embed">
+        <iframe src="${url}" width="800" height="600" allow="cross-origin-isolated" allowfullscreen frameborder="0" id="infinite_mac_embed_frame"></iframe>
+      <div style="text-align: right;">
+        <span class="text">Emulator by <a href="https://infinitemac.org/" target="_blank">Infinite Mac</a></span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="text"><a href="#" onclick="go_fullscreen()">Fullscreen</a></span> <a href="#" onclick="go_fullscreen()"><span class="icons" style="font-size: small;"><span aria-hidden="true" class="fa-solid fa-expand" title="Fullscreen"></span></span></a></span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="text"><a href="#" onclick="close_emulator()">Close</a></span> <a href="#" onclick="close_emulator()"><span class="icons" style="font-size: small;"><span aria-hidden="true" class="fa-solid fa-square-xmark" title="Close"></span></span></a>
+      </div>
+      </div>`
+  }
 </script>
 {% if source.infinite_mac_url and source.virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore the disc</b></a>{% endif %}
 {% if source.infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Explore the disc (Mac OS X)</b></a>{% endif %}
