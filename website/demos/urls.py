@@ -24,7 +24,6 @@ magazinelist = {
 urlpatterns = [
     path("", views.home, name="home"),
     path("games/", views.GameListView.as_view(), kwargs={ "order": "game" }, name="games"),
-    path("games/<order>", views.GameListView.as_view(), name="games"),
     path("nn/games/", views.GameListView.as_view(), kwargs={ "order": "game", "nonav": "true" }, name="games_nn"),
     path("playable/", views.GameListView.as_view(), kwargs={ "order": "game", "constraint": "playable" }, name="playable"),
     path("play/<slug:slug>/", views.play, name="play"),

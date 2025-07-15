@@ -4,7 +4,8 @@
 <html lang="en">
 <head>
     <title>{% block title %}Classic Macintosh Game Demos{% endblock %}</title>
-    <link rel="stylesheet" href="/classicmacdemos.css" />{% if not request.session.is_old_browser %}
+    <link rel="stylesheet" href="/classicmacdemos.css" />{% if canonical_uri %}
+    <link rel="canonical" href="{{ canonical_uri }}" />{% endif %}{% if not request.session.is_old_browser %}
     <link rel="preconnect" href="{{ request.scheme }}://static.classicmacdemos.com" crossorigin>
     <link rel="icon" href="{{ request.scheme }}:{% static 'icons/hqx.png' %}" />
     <link rel="apple-touch-icon" href="{% static 'icons/hqx.png' %}" />

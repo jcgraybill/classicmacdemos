@@ -2,6 +2,7 @@ from django.shortcuts import redirect,render,get_object_or_404
 from django.views import generic
 from django.http import HttpResponse, HttpResponseNotFound
 from django.db.models import Q
+from django.urls import reverse
 
 from .models import Game, Source, Magazine, Country
 from django.db.models.functions import Lower
@@ -10,6 +11,10 @@ from datetime import date
 
 class GameListView(generic.ListView):
     context_object_name = "game_list"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["canonical_uri"] = self.request.build_absolute_uri(reverse("demos:games"))
+        return context
     def get_queryset(self):
         order = "-added"
         orders = {"added": "added",
@@ -30,6 +35,7 @@ class DemoView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["screens"] = range(1,self.get_object().screens + 1)
+        context["canonical_uri"] = self.request.build_absolute_uri(self.get_object().get_absolute_url())
         return context
 
 class SourceView(generic.DetailView):
@@ -38,6 +44,7 @@ class SourceView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context["images"] = range(1,self.get_object().images + 1)
         context["tab"] = "discs"
+        context["canonical_uri"] = self.request.build_absolute_uri(self.get_object().get_absolute_url())
         return context
 
 class MagazineListView(generic.ListView):
@@ -48,6 +55,7 @@ class MagazineListView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context["tab"] = "discs"
         context["countries"] = Country.objects.order_by("display_order", "iso")
+        context["canonical_uri"] = self.request.build_absolute_uri(reverse("demos:sources"))
         return context
 
 class MagazineView(generic.DetailView):
@@ -55,6 +63,7 @@ class MagazineView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tab"] = "discs"
+        context["canonical_uri"] = self.request.build_absolute_uri(self.get_object().get_absolute_url())
         return context
     
 def download(request, slug, mc68k):
@@ -104,6 +113,7 @@ def explore(request, slug: str, alt: bool, osx: bool):
 
 def about(request):
     context = dict()
+    context["canonical_uri"] = request.build_absolute_uri(reverse("demos:about"))
     context["count"] = Game.objects.count()
     context["sources"] = Source.objects.count()
     context["infinitemac"] = Game.objects.filter(virtual_machine__isnull=False).count()
@@ -111,6 +121,7 @@ def about(request):
 
 def home(request):
     context = dict()
+    context["canonical_uri"] = request.build_absolute_uri(reverse("demos:home"))
     context["downloads"] = Game.objects.order_by("-download__downloads")
     context["infinitemac"] = Game.objects.filter(virtual_machine__isnull=False).order_by("-play__plays")
     context["discs"] = Source.objects.order_by('-added')

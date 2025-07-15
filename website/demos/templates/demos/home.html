@@ -5,7 +5,7 @@
 <section>
 <aside>
 <h3>Download classic Macintosh game demos</h3>
-<div class="homebutton"><a href="{% url 'demos:games' 'game' %}"><b><span aria-hidden="true" class="fa-solid fa-download" title="Download"></span> Get the games{% if not request.session.is_old_browser %} &rarr;{% endif %}</b></a></div>
+<div class="homebutton"><a href="{% url 'demos:games' %}"><b><span aria-hidden="true" class="fa-solid fa-download" title="Download"></span> Get the games{% if not request.session.is_old_browser %} &rarr;{% endif %}</b></a></div>
 <p>Browse <b>{{ downloads.count }}</b> downloadable game demos for Classic-era Macintoshes for a quick retrogaming fix. Retro-browser users, try the site's <a href="http://classicmacdemos.com/">http mode</a>.</p>
 <p><b>Most downloaded games:</b></p>
 {% include "demos/game_cards.html" with games=downloads|slice:":5" tiny=True %}
