@@ -65,6 +65,10 @@ class Game(models.Model):
     screens = models.IntegerField("Screenshots", default=0)
     blurb = models.TextField("Blurb", blank=True)
     virtual_machine = models.ForeignKey(VirtualMachine, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to=Q(disk__exact=''))
+    WIDTHS = [(640, 'width640'), (800, 'width800'), (1024, 'width1024')]
+    HEIGHTS = [(480, 'height480'), (600, 'height600'), (768, 'height768')]
+    virtual_machine_width = models.IntegerField(choices=WIDTHS, default=640)
+    virtual_machine_height = models.IntegerField(choices=HEIGHTS, default=480)
     def __str__(self): return self.game
     def get_absolute_url(self): return reverse("demos:demo", kwargs={ "slug": self.slug })
     def get_sorted_sources(self): return self.source_set.all().order_by('description')
