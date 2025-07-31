@@ -30,6 +30,7 @@ class Months(models.IntegerChoices):
 
 class VirtualMachine(models.Model):
     description = models.CharField("Description", max_length=50, blank=False)
+    website_description = models.CharField("Website description", max_length=50, blank=True)
     machine     = models.CharField("Machine configuration", max_length=100, blank=False)
     disk        = models.CharField("Disk name", max_length=50, blank=True)
     def __str__(self): return self.description
@@ -110,6 +111,7 @@ class Source(models.Model):
     contributor = models.CharField("Contributed by", max_length=200, blank=True)
     contributor_url = models.URLField("Contributor URL", blank=True)
     url = models.URLField("Webpage", blank=True)
+    discmaster = models.URLField("DiscMaster URL", blank=True)
     magazine_url = models.URLField("Magazine URL", blank=True)
     magazine_embed_url = models.URLField("Embeddable Magazine URL", blank=True)
     infinite_mac_url = models.URLField("ISO/DMG URL", max_length=500, blank=True)
@@ -125,6 +127,7 @@ class Source(models.Model):
     blurb = models.TextField("Blurb", blank=True)
     slug = models.SlugField(null=False, unique=True)
     disc2_url = models.URLField("Disc 2 Webpage", blank=True)
+    disc2_discmaster = models.URLField("Disc 2 DiscMaster URL", blank=True)
     disc2_infinite_mac_url = models.URLField("Disc 2 ISO/DMG URL", max_length=500, blank=True)
     added = models.DateTimeField("Added", default=django.utils.timezone.now)
     def __str__(self): return self.description
