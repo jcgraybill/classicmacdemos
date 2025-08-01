@@ -12,7 +12,14 @@
 {% if request.session.is_old_browser %}<p>{% endif %}
 {% if source.url %}<a href="{{ source.url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get the disc</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
+{% if source.discmaster %}<a href="{{ source.discmaster }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore at DiscMaster</b></a>{% endif %}
+{% if request.session.is_old_browser %}<p>{% endif %}
+{% if source.disc2_url %}<a href="{{ source.disc2_url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get disc 2</b></a>{% endif %}
+{% if request.session.is_old_browser %}<p>{% endif %}
+{% if source.disc2_discmaster %}<a href="{{ source.disc2_discmaster }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 2 at DiscMaster</b></a>{% endif %}
+{% if request.session.is_old_browser %}<p>{% endif %}
 {% if source.magazine_url and not source.magazine_embed_url %}<a href="{{ source.magazine_url }}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-book-open"></span> Read the magazine</b></a>{% endif %}
+{% if request.session.is_old_browser %}<p>{% endif %}
 {% if source.magazine_embed_url %}
 {% if request.session.is_old_browser %}
 <a href="{{ source.magazine_embed_url }}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-book-open"></span> Read the magazine</b></a>
@@ -55,11 +62,8 @@
       </div>`
   }
 </script>
-{% if source.discmaster %}<br><a href="{{ source.discmaster }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore at DiscMaster</b></a>{% endif %}
 {% if source.infinite_mac_url and source.virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-power-off"></span> Launch in {{ source.virtual_machine.website_description }} emulator</b></a>{% endif %}
 {% if source.infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Launch in {{ source.osx_virtual_machine.website_description }} emulator</b></a>{% endif %}
-{% if source.disc2_url %}<br><a href="{{ source.disc2_url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get disc 2</b></a>{% endif %}
-{% if source.disc2_discmaster %}<br><a href="{{ source.disc2_discmaster }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 2 at DiscMaster</b></a>{% endif %}
 {% if source.disc2_infinite_mac_url and source.virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/alt' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-power-off"></span> Launch disc 2 in {{ source.virtual_machine.website_description }} emulator</b></a>{% endif %}
 {% if source.disc2_infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/alt/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Launch disc 2 in {{ source.osx_virtual_machine.website_description }} emulator</b></a>{% endif %}
 {% endif %}
