@@ -134,6 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SITE_ID = 1
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 CACHES = {
     "default": {
@@ -144,4 +145,4 @@ CACHES = {
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Override to change cache duration
-CACHE_MIDDLEWARE_SECONDS = 600
+CACHE_MIDDLEWARE_SECONDS = 60

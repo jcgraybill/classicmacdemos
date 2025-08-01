@@ -11,8 +11,7 @@
 <aside class="magazine-card"><a href="{% url 'demos:magazine' magazine.slug %}">
     <strong>{{ magazine }}</strong>
     <div><span aria-hidden="true" class="fa-solid fa-calendar" title="Released"></span><span class="fa-sr-only">Released</span> {{ magazine.begin.year__min }}{% if magazine.source_set.count > 1 and magazine.end.year__max > magazine.begin.year__min %} - {{ magazine.end.year__max }}{% endif %}</div>
-    {% if magazine.source_set.count > 0 %}<span aria-hidden="true" class="fa-solid fa-compact-disc" title="Discs"></span><span class="fa-sr-only">Discs</span> {{ magazine.source_set.count }} | {% endif %}
-    {% if magazine.unique_game_count > 0 %}<span aria-hidden="true" class="fa-solid fa-download" title="Demos"></span><span class="fa-sr-only">Demos</span> {{ magazine.unique_game_count }} {% endif %}
+    {% if magazine.source_set.count > 0 %}<span aria-hidden="true" class="fa-solid fa-compact-disc" title="Discs"></span><span class="fa-sr-only">Discs</span> {{ magazine.source_set.count }}{% endif %}
     {% if not request.session.is_old_browser %}{% if magazine.image %}<img src="{{ request.scheme }}:{% static 'magazines'%}/{{ magazine.slug }}/image-1.png" alt="{{ magazine }}">{% else %}<img src="{{ request.scheme }}:{% static 'icons' %}/cd-medium.png" alt="{{ magazine }}">{% endif %}{% endif %}
 </a></aside>
 {% if request.session.is_old_browser %}<p>{% endif %}
