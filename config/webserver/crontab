@@ -1,0 +1,2 @@
+15 9 * * 2 /usr/bin/systemctl reload nginx.service
+0 9 * * * chmod a+r /var/log/nginx
