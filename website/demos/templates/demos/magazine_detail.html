@@ -28,7 +28,7 @@
     {% if source.magazine_url or source.magazine_embed_url %}<span aria-hidden="true" class="fa-solid fa-book-open" title="Read"></span><span class="fa-sr-only">Read</span> | {% endif %}
     {% if source.infinite_mac_url and source.virtual_machine %}<span aria-hidden="true" class="fa-solid fa-magnifying-glass" title="Explore"></span><span class="fa-sr-only">Explore</span> | {% endif %}
     <span aria-hidden="true" class="fa-solid fa-download" title="Demos"></span><span class="fa-sr-only">Demos</span> {{ source.game.all.count }} | 
-    <span aria-hidden="true" class="fa-solid fa-play" title="Play"></span><span class="fa-sr-only">Play</span> {{ source.playable_games.count }}
+    <span aria-hidden="true" class="fa-solid fa-play" title="Playable demos"></span><span class="fa-sr-only">Play</span> {{ source.playable_games.count }}
     </div>
     {% if not request.session.is_old_browser %}{% if source.images >= 1 %}<img src="{{ request.scheme }}:{% static 'discs' %}/{{ source.slug }}/image-1.png" alt="{{ source.description }}">{% else %}<img src="{{ request.scheme }}:{% static 'icons' %}/cd-medium.png" alt="{{ source.description }}">{% endif %}{% endif %}
     </a></aside>

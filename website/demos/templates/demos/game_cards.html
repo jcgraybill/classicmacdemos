@@ -14,15 +14,9 @@
     <div class="game-card"><a href="{% url 'demos:demo' game.slug %}"><div style="text-align: left;">
         <img src="{{ request.scheme }}:{% static 'demos/'%}{{game.slug}}/icon.png" height="32" width="32" alt="{{ game.game }}">
     <div style="float:inline-start; display:box; width: 190px;">
-        <span class="text">{{ game.game }}<br />{{ game.year }}</span>
-        <span class="icons">
-            {% if game.virtual_machine %}<span aria-hidden="true" class="fa-solid fa-play" title="Play"></span><span class="fa-sr-only">Play</span>{% endif %}
-            {% if game.filename %}<span aria-hidden="true" class="fa-solid fa-download" title="Download"></span><span class="fa-sr-only">Download</span>{% endif %}
-            {% if game.filename_68k %}<span aria-hidden="true" class="fa-solid fa-download" title="Alternative download"></span><span class="fa-sr-only">Alternative download</span>{% endif %}
-            {% if game.readme_txt %}<span aria-hidden="true" class="fa-solid fa-file-lines" title="Text"></span><span class="fa-sr-only">Text</span>{% endif %}
-            {% if game.readme_html %}<span aria-hidden="true" class="fa-solid fa-file-code" title="HTML"></span><span class="fa-sr-only">HTML</span>{% endif %}
-            {% if game.readme_pdf %}<span aria-hidden="true" class="fa-solid fa-file-pdf" title="PDF"></span><span class="fa-sr-only">PDF</span>{% endif %}
-        </span>
+        <span class="text">{{ game.game }}<br /></span>
+        <span class="icons">{% if game.virtual_machine %}<span aria-hidden="true" class="fa-solid fa-play" title="Play"></span><span class="fa-sr-only">Play</span>{% endif %}</span>
+        <span class="text">{{ game.year }}</span>
     </div>
     </div></a></div>
     {% endif %}
