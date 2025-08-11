@@ -17,7 +17,7 @@
 <p>Includes CDs that originally came bundled with <a href="{% url 'demos:magazine' 'macworld' %}">Macworld</a>, <a href="{% url 'demos:magazine' 'macaddict' %}">Macaddict</a>, and <a href="{% url 'demos:magazine' 'inside-mac-games' %}">Inside Mac Games</a>, plus a growing collection of global magazines. </p>
 <p><b>Newest find:</b></p>
 {% for disc in discs|slice:":1" %}
-    {% if disc.images > 1 %}
+    {% if disc.images > 0 %}
         <a href="{% url 'demos:source' disc.slug %}"><img src="{{ request.scheme }}:{% static 'discs' %}/{{ disc.slug }}/image-1.png" alt="{{ disc.description }}"></a>
     {% else %}
         <a href="{% url 'demos:source' disc.slug %}">{{ disc.description }}</a>

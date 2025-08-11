@@ -51,6 +51,19 @@
   function launch_emulator(url) { 
     document.getElementById("infinite_mac_embed").innerHTML = `
     <div class="embed">
+        <iframe src="${url}" width="800" height="600" allow="cross-origin-isolated" allowfullscreen frameborder="0" id="infinite_mac_embed_frame"></iframe>
+      <div style="text-align: right;">
+        <span class="text">Emulator by <a href="https://infinitemac.org/" target="_blank">Infinite Mac</a></span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="text"><a href="#" onclick="go_fullscreen()">Fullscreen</a></span> <a href="#" onclick="go_fullscreen()"><span class="icons" style="font-size: small;"><span aria-hidden="true" class="fa-solid fa-expand" title="Fullscreen"></span></span></a></span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="text"><a href="#" onclick="close_emulator()">Close</a></span> <a href="#" onclick="close_emulator()"><span class="icons" style="font-size: small;"><span aria-hidden="true" class="fa-solid fa-square-xmark" title="Close"></span></span></a>
+      </div>
+      </div>`
+  }
+  function launch_osx_emulator(url) { 
+    document.getElementById("infinite_mac_embed").innerHTML = `
+    <div class="embed">
         <iframe src="${url}" width="832" height="624" allow="cross-origin-isolated" allowfullscreen frameborder="0" id="infinite_mac_embed_frame"></iframe>
       <div style="text-align: right;">
         <span class="text">Emulator by <a href="https://infinitemac.org/" target="_blank">Infinite Mac</a></span>
@@ -64,8 +77,8 @@
 </script>
 {% if source.infinite_mac_url and source.virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-power-off"></span> Launch in {{ source.virtual_machine.website_description }} emulator</b></a>{% endif %}
 {% if source.disc2_infinite_mac_url and source.virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/alt' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-power-off"></span> Launch disc 2 in {{ source.virtual_machine.website_description }} emulator</b></a>{% endif %}
-{% if source.infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Launch in {{ source.osx_virtual_machine.website_description }} emulator</b></a>{% endif %}
-{% if source.disc2_infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_emulator('{% url 'demos:explore/alt/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Launch disc 2 in {{ source.osx_virtual_machine.website_description }} emulator</b></a>{% endif %}
+{% if source.infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_osx_emulator('{% url 'demos:explore/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Launch in {{ source.osx_virtual_machine.website_description }} emulator</b></a>{% endif %}
+{% if source.disc2_infinite_mac_url and source.osx_virtual_machine %}<a href="#" onclick="launch_osx_emulator('{% url 'demos:explore/alt/osx' source.slug %}')"><b><span aria-hidden="true" class="fa-solid fa-x"></span> Launch disc 2 in {{ source.osx_virtual_machine.website_description }} emulator</b></a>{% endif %}
 {% endif %}
 </section>
 {% endblock %}
