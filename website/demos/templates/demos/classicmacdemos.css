@@ -41,6 +41,7 @@ https://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=3809 */
     --justify-important: center;
     --justify-normal: left;
     --line-height: 1.2;
+    --button-height: 1.0;
     --width-card: 285px;
     --width-card-tiny: 244px;
     --width-card-medium: 460px;
@@ -264,9 +265,9 @@ input[type="submit"] {
     display: inline-block;
     font-size: medium;
     font-weight: bold;
-    line-height: var(--line-height);
-    margin: 0.5rem 0;
-    padding: 0.5rem 0.5rem;
+    line-height: var(--button-height);
+    margin: 0.3rem 0;
+    padding: 0.3rem 0.3rem;
 }
 
 a b,
