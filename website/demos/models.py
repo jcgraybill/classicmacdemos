@@ -150,7 +150,7 @@ class Play(models.Model):
 class Explore(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE, auto_created=True)
     explores = models.IntegerField(default=0, blank=True)
-    def __str__(self): return "{source} ({explores})".format(source=self.source.source, explores=self.explores)
+    def __str__(self): return "{source} ({explores})".format(source=self.source.description, explores=self.explores)
 
 class Website(models.Model):
     game      = models.ForeignKey(Game, on_delete=models.CASCADE)
