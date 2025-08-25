@@ -1,2 +1,3 @@
 15 9 * * 2 /usr/bin/systemctl reload nginx.service
 0 9 * * * chmod a+r /var/log/nginx
+35 12 * * * /home/ec2-user/classicmacdemos/config/webserver/daily-maintenance.sh
