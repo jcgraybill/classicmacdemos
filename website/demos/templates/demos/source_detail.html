@@ -10,13 +10,13 @@
 <section>
 {% if source.magazine.slug %}<a href="{% url 'demos:magazine' source.magazine.slug %}"><b>{% if not request.session.is_old_browser %}&larr;{% endif %} All {{ source.magazine }}</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
-{% if source.url %}<a href="{{ source.url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get the disc</b></a>{% endif %}
+{% if source.url %}<a href="{{ source.url }}"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get the disc</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
-{% if source.discmaster %}<a href="{{ source.discmaster }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore at DiscMaster</b></a>{% endif %}
+{% if source.discmaster %}<a href="{{ source.discmaster }}"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore at DiscMaster</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
-{% if source.disc2_url %}<a href="{{ source.disc2_url }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get disc 2</b></a>{% endif %}
+{% if source.disc2_url %}<a href="{{ source.disc2_url }}"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get disc 2</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
-{% if source.disc2_discmaster %}<a href="{{ source.disc2_discmaster }}" target ="_blank"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 2 at DiscMaster</b></a>{% endif %}
+{% if source.disc2_discmaster %}<a href="{{ source.disc2_discmaster }}"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 2 at DiscMaster</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
 {% if source.magazine_url and not source.magazine_embed_url %}<a href="{{ source.magazine_url }}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-book-open"></span> Read the magazine</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
