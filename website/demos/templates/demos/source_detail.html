@@ -6,7 +6,7 @@
 {% block og-image %}{% block tw-image %}{% if source.images >= 1 %}{{ request.scheme }}:{% static 'discs' %}/{{ source.slug }}/image-1.png{% else %}{{ block.super }}{% endif %}{% endblock %}{% endblock %}
 {% block splide %}{% if source.images > 1 %}{% include "demos/splide.html" %}{% endif %}{% endblock %}
 {% block header %}
-<h1>{{ source.description }}{% if source.year %} ({% if source.month %}{{ source.get_month_display }} {% endif %}{{ source.year }}){% endif %}</h1>
+<h1>{{ source.description }}</h1>
 <section>
 {% if source.magazine.slug %}<a href="{% url 'demos:magazine' source.magazine.slug %}"><b>{% if not request.session.is_old_browser %}&larr;{% endif %} All {{ source.magazine }}</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
@@ -89,8 +89,9 @@
 {% block content %}
 <section id="infinite_mac_embed"></section>
 <section>
-{% if source.blurb or source.images > 0 or source.magazine_embed_url %}
+{% if source.blurb or source.images > 0 or source.magazine_embed_url or source.month or source.year %}
 <aside class="wide" style="border: none;">
+{% if source.month or source.year %}<h4><span aria-hidden="true" class="fa-solid fa-calendar" title="Released"></span><span class="fa-sr-only">Released</span> {% if source.month %}{{ source.get_month_display }} {% endif %}{% if source.year %}{{ source.year }}{% endif %}</h4>{% endif %}
 {% if source.blurb %}
 <article>{{ source.blurb | markdown | safe }}</article>
 {% endif %}
