@@ -1,5 +1,5 @@
 from django.urls import path
-from demos.feeds import LatestEntriesFeed
+from demos.feeds import LatestEntriesFeed, LatestEntriesWithImagesFeed
 from django.contrib.sitemaps import GenericSitemap
 from django.contrib.sitemaps.views import sitemap
 from demos.models import Game, Magazine, Source
@@ -39,6 +39,7 @@ urlpatterns = [
     path("disc/<slug:slug>/", views.SourceView.as_view(), name="source"),
     path("about/", views.about, name="about"),
     path("rss/", LatestEntriesFeed(), name="rss"),
+    path("rss/withimages/", LatestEntriesWithImagesFeed(), name="rsswithimages"),
     path("sitemap.xml", sitemap, { "sitemaps": { 
                                     "games": GenericSitemap(gamelist, protocol="https"),
                                     "magazines": GenericSitemap(magazinelist, protocol="https"),
