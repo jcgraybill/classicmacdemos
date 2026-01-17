@@ -22,7 +22,7 @@
 <aside>
 <h3>Browse Macintosh magazine cover CDs</h3>
 <div class="homebutton"><a href="{% url 'demos:sources' %}"><b><span aria-hidden="true" class="fa-solid fa-compact-disc" title="Discs"></span> Explore the CDs{% if not request.session.is_old_browser %} &rarr;{% endif %}</b></a></div>
-<p>Relive the retro computer magazine experience with a library of <b>{{ discs.count }}</b> cover CDs from Macintosh computer magazines, all explorable in a live <a href="https://infinitemac.org/">Infinite Mac</a> virtual machine.</p> 
+<p>Relive the retro computer magazine experience with a library of <b>{{ sources }}</b> cover CDs from Macintosh computer magazines, all explorable in a live <a href="https://infinitemac.org/">Infinite Mac</a> virtual machine.</p> 
 <p>Includes CDs that originally came bundled with <a href="{% url 'demos:magazine' 'macworld' %}">Macworld</a>, <a href="{% url 'demos:magazine' 'macaddict' %}">Macaddict</a>, and <a href="{% url 'demos:magazine' 'inside-mac-games' %}">Inside Mac Games</a>, plus a growing collection of global magazines.</p>
 {% for disc in discs|slice:":1" %}
     {% if disc.images > 0 %}
