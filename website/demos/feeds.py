@@ -55,9 +55,9 @@ class LatestEntriesFeed(Feed):
                 description += f"Released %s | %s" % (item.year, item.blurb)
         else:
             if isinstance(item, Source) and item.month:
-                description += f"Released %s %s" % (months[item.month], item.year)
+                description += f"released %s %s" % (months[item.month], item.year)
             else:
-                description += f"Released %s" % item.year
+                description += f"released %s" % item.year
         description += " <img src=\"{}\">".format(self.item_enclosure_url(item))
         return description
     
@@ -111,8 +111,8 @@ class LatestEntriesWithImagesFeed(Feed):
                 description += f"Released %s | %s" % (item.year, item.blurb)
         else:
             if isinstance(item, Source) and item.month:
-                description += f"| released %s %s" % (months[item.month], item.year)
+                description += f"released %s %s" % (months[item.month], item.year)
             else:
-                description += f"| released %s" % item.year
+                description += f"released %s" % item.year
         description += " <img src=\"{}\">".format(self.item_enclosure_url(item))
         return description
