@@ -1,6 +1,8 @@
 from django.contrib.syndication.views import Feed
 from django.templatetags.static import static
 from .models import Game, Source
+from .templatetags.markdown_extras import markdown
+from django.template.defaultfilters import striptags
 
 class LatestEntriesFeed(Feed):
     title = "Classic Macintosh Game Demos"
@@ -50,9 +52,9 @@ class LatestEntriesFeed(Feed):
         months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Holiday"]
         if (item.blurb):
             if isinstance(item, Source) and item.month:
-                description += f"Released %s %s | %s" % (months[item.month], item.year, item.blurb)
+                description += f"Released %s %s | %s" % (months[item.month], item.year, striptags(markdown(item.blurb)) ) 
             else:
-                description += f"Released %s | %s" % (item.year, item.blurb)
+                description += f"Released %s | %s" % (item.year, striptags(markdown(item.blurb)))
         else:
             if isinstance(item, Source) and item.month:
                 description += f"released %s %s" % (months[item.month], item.year)
@@ -106,9 +108,9 @@ class LatestEntriesWithImagesFeed(Feed):
         months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Holiday"]
         if (item.blurb):
             if isinstance(item, Source) and item.month:
-                description += f"Released %s %s | %s" % (months[item.month], item.year, item.blurb)
+                description += f"Released %s %s | %s" % (months[item.month], item.year, striptags(markdown(item.blurb)))
             else:
-                description += f"Released %s | %s" % (item.year, item.blurb)
+                description += f"Released %s | %s" % (item.year, striptags(markdown(item.blurb)))
         else:
             if isinstance(item, Source) and item.month:
                 description += f"released %s %s" % (months[item.month], item.year)
