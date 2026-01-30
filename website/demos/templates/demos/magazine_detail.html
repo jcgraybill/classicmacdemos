@@ -24,7 +24,9 @@
     <div class="icons">
     {% if source.url %}<span aria-hidden="true" class="fa-solid fa-compact-disc" title="CD"></span><span class="fa-sr-only">CD</span>{% endif %}
     {% if source.disc2_url or source.disc2_infinite_mac_url %}<span aria-hidden="true" class="fa-solid fa-compact-disc" title="CD"></span><span class="fa-sr-only">CD 2</span>{% endif %}
-    {% if source.url or source.disc2_url or source.disc2_infinite_mac_url %} | {% endif %} 
+    {% if source.disc3_url or source.disc3_infinite_mac_url %}<span aria-hidden="true" class="fa-solid fa-compact-disc" title="CD"></span><span class="fa-sr-only">CD 3</span>{% endif %}
+    {% if source.disc4_url or source.disc4_infinite_mac_url %}<span aria-hidden="true" class="fa-solid fa-compact-disc" title="CD"></span><span class="fa-sr-only">CD 4</span>{% endif %}
+    {% if source.url %} | {% endif %} 
     {% if source.magazine_url or source.magazine_embed_url %}<span aria-hidden="true" class="fa-solid fa-book-open" title="Read"></span><span class="fa-sr-only">Read</span> | {% endif %}
     <span aria-hidden="true" class="fa-solid fa-download" title="Demos"></span><span class="fa-sr-only">Demos</span> {{ source.game.all.count }} | 
     <span aria-hidden="true" class="fa-solid fa-play" title="Playable demos"></span><span class="fa-sr-only">Play</span> {{ source.playable_games.count }}

@@ -56,8 +56,9 @@ class Game(models.Model):
     contributor_url = models.URLField("Contributor URL", blank=True)
     year = models.IntegerField("Published", default=2000)
     languages = models.ManyToManyField(Language, blank=True)
-    filename = models.CharField("PowerPC/Universal file name", max_length=100)
-    filename_68k = models.CharField("68k File name", max_length=100, blank=True)
+    filename = models.CharField("Download file name", max_length=100)
+    filename_68k = models.CharField("Download 2 File name", max_length=100, blank=True)
+    filename_3 = models.CharField("Download 3 File name", max_length=100, blank=True)
     readme_txt = models.BooleanField("README.txt", default=False)
     readme_html = models.BooleanField("README.html", default=False)
     readme_pdf = models.BooleanField("README.pdf", default=False)
@@ -75,6 +76,7 @@ class Game(models.Model):
     def get_sorted_sources(self): return self.source_set.all().order_by('description')
     def get_file_size(self): return self.getsize(self.filename)
     def get_alt_file_size(self): return self.getsize(self.filename_68k)
+    def get_dl3_file_size(self): return self.getsize(self.filename_3)
     def getsize(self, filename):
         try:
             head = self.s3.head_object(
@@ -129,6 +131,12 @@ class Source(models.Model):
     disc2_url = models.URLField("Disc 2 Webpage", blank=True)
     disc2_discmaster = models.URLField("Disc 2 DiscMaster URL", blank=True)
     disc2_infinite_mac_url = models.URLField("Disc 2 ISO/DMG URL", max_length=500, blank=True)
+    disc3_url = models.URLField("Disc 3 Webpage", blank=True)
+    disc3_discmaster = models.URLField("Disc 3 DiscMaster URL", blank=True)
+    disc3_infinite_mac_url = models.URLField("Disc 3 ISO/DMG URL", max_length=500, blank=True)
+    disc4_url = models.URLField("Disc 4 Webpage", blank=True)
+    disc4_discmaster = models.URLField("Disc 4 DiscMaster URL", blank=True)
+    disc4_infinite_mac_url = models.URLField("Disc 4 ISO/DMG URL", max_length=500, blank=True)
     added = models.DateTimeField("Added", default=django.utils.timezone.now)
     def __str__(self): return self.description
     def get_absolute_url(self): return reverse("demos:source", kwargs={ "slug": self.slug })

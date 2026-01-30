@@ -91,7 +91,8 @@
         </details>
                 {% endif %}
         <p><span aria-hidden="true" class="fa-solid fa-download"></span> <a href="{% url 'demos:download' game.slug %}">Download {{ game.filename }} ({{ game.get_file_size }})</a></p>
-        {% if game.filename_68k %}<p><span aria-hidden="true" class="fa-solid fa-download"></span> <a href="{% url 'demos:download/68k' game.slug %}">Download {{ game.filename_68k }} ({{ game.get_alt_file_size }})</a></p>{% endif %}
+        {% if game.filename_68k %}<p><span aria-hidden="true" class="fa-solid fa-download"></span> <a href="{% url 'demos:download/2' game.slug %}">Download {{ game.filename_68k }} ({{ game.get_alt_file_size }})</a></p>{% endif %}
+        {% if game.filename_3 %}<p><span aria-hidden="true" class="fa-solid fa-download"></span> <a href="{% url 'demos:download/3' game.slug %}">Download {{ game.filename_3 }} ({{ game.get_dl3_file_size }})</a></p>{% endif %}
         {% if game.readme_txt %}<p><span aria-hidden="true" class="fa-solid fa-file-lines"></span> <a href="{{ request.scheme }}:{% static 'demos' %}/{{game.slug }}/README.txt">README.txt</a></p>{% endif %}
         {% if game.readme_html %}<p><span aria-hidden="true" class="fa-solid fa-file-code"></span> <a href="{{ request.scheme }}:{% static 'demos' %}/{{game.slug }}/README.html">README.html</a></p>{% endif %}
         {% if game.readme_pdf %}<p><span aria-hidden="true" class="fa-solid fa-file-pdf"></span> <a href="{{ request.scheme }}:{% static 'demos' %}/{{game.slug }}/README.pdf">README.pdf</a></p>{% endif %}

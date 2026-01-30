@@ -66,15 +66,18 @@ class MagazineView(generic.DetailView):
         context["canonical_uri"] = self.request.build_absolute_uri(self.get_object().get_absolute_url())
         return context
     
-def download(request, slug, mc68k):
+def download(request, slug, dl: int):
     prefix = request.scheme +  "://download.classicmacdemos.com/"
     game = get_object_or_404(Game, slug=slug)
     d, _ = game.download_set.get_or_create()
     d.downloads +=1
     d.save()
-    filename = game.filename
-    if mc68k and game.filename_68k:
+    if dl == 2 and game.filename_68k:
         filename = game.filename_68k
+    elif dl == 3 and game.filename_3:
+        filename = game.filename_3
+    else:
+        filename = game.filename
     return redirect(prefix + filename)
 
 def play(request,slug):
@@ -91,10 +94,17 @@ def play(request,slug):
     else:
         return HttpResponseNotFound()
 
-def explore(request, slug: str, alt: bool, osx: bool):
+def explore(request, slug: str, disc: int, osx: bool):
     source = get_object_or_404(Source, slug=slug)
     virtual_machine = source.osx_virtual_machine if osx else source.virtual_machine
-    cdrom_url = source.disc2_infinite_mac_url if alt else source.infinite_mac_url
+    if disc == 2 and source.disc2_infinite_mac_url:        
+        cdrom_url = source.disc2_infinite_mac_url
+    elif disc == 3 and source.disc3_infinite_mac_url:        
+        cdrom_url = source.disc3_infinite_mac_url
+    elif disc == 4 and source.disc4_infinite_mac_url:        
+        cdrom_url = source.disc4_infinite_mac_url
+    else:
+        cdrom_url = source.infinite_mac_url
     
     if not (virtual_machine and cdrom_url): 
         return HttpResponseNotFound()
