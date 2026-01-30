@@ -24,7 +24,7 @@
 {% if request.session.is_old_browser %}<p>{% endif %}
 {% if source.disc4_url %}<a href="{{ source.disc4_url }}"><b><span aria-hidden="true" class="fa-solid fa-compact-disc"></span> Get disc 4</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
-{% if source.disc2_discmaster %}<a href="{{ source.disc4_discmaster }}"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 4 at DiscMaster</b></a>{% endif %}
+{% if source.disc4_discmaster %}<a href="{{ source.disc4_discmaster }}"><b><span aria-hidden="true" class="fa-solid fa-magnifying-glass"></span> Explore disc 4 at DiscMaster</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
 {% if source.magazine_url and not source.magazine_embed_url %}<a href="{{ source.magazine_url }}" target="_blank"><b><span aria-hidden="true" class="fa-solid fa-book-open"></span> Read the magazine</b></a>{% endif %}
 {% if request.session.is_old_browser %}<p>{% endif %}
