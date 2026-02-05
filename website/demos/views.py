@@ -134,7 +134,7 @@ def home(request):
     context["canonical_uri"] = request.build_absolute_uri(reverse("demos:home"))
     context["downloads"] = Game.objects.order_by("-download__downloads")
     context["infinitemac"] = Game.objects.filter(virtual_machine__isnull=False).order_by("-play__plays")
-    context["discs"] = Source.objects.order_by('-added')
+    context["discs"] = Source.objects.exclude(images__exact=0).order_by('-added')
     context["sources"] = Source.objects.exclude(disc2_infinite_mac_url__exact='').count() + Source.objects.exclude(disc3_infinite_mac_url__exact='').count() + Source.objects.exclude(disc4_infinite_mac_url__exact='').count() + Source.objects.count()
     return render(request,"demos/home.html", context)
 

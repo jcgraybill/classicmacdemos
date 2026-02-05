@@ -25,10 +25,8 @@
 <p>Relive the retro computer magazine experience with a library of <b>{{ sources }}</b> cover CDs from Macintosh computer magazines, all explorable in a live <a href="https://infinitemac.org/">Infinite Mac</a> virtual machine.</p> 
 <p>Includes CDs that originally came bundled with <a href="{% url 'demos:magazine' 'macworld' %}">Macworld</a>, <a href="{% url 'demos:magazine' 'macaddict' %}">Macaddict</a>, and <a href="{% url 'demos:magazine' 'inside-mac-games' %}">Inside Mac Games</a>, plus a growing collection of global magazines.</p>
 {% for disc in discs|slice:":1" %}
-    {% if disc.images > 0 %}
-        <p><b>Newest CD:</b></p>
-        <a href="{% url 'demos:source' disc.slug %}"><img src="{{ request.scheme }}:{% static 'discs' %}/{{ disc.slug }}/image-1.png" alt="{{ disc.description }}"></a>
-    {% endif %}
+<p><b>Newest CD:</b></p>
+<a href="{% url 'demos:source' disc.slug %}"><img src="{{ request.scheme }}:{% static 'discs' %}/{{ disc.slug }}/image-1.png" alt="{{ disc.description }}"></a>
 {% endfor %}
 </aside>
 </section>
