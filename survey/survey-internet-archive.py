@@ -5,7 +5,10 @@ import os, sqlite3, sys
 
 searches = [
     'collection:macworld-cds',
-    'subject:"Macworld"'
+    'subject:"Macworld" AND mediatype:"software"',
+    'creator:"Macworld" AND mediatype:"software"',
+    'collection:macformat-mag-cds',
+    'subject:"MacFormat" AND mediatype:"software"',
 ]
 
 globs = [
@@ -13,7 +16,9 @@ globs = [
     '*.toast',
     '*.bin',
     '*.cdr',
-    '*.sit'
+    '*.sit',
+    '*.dmg',
+    '*.7z'
 ]
 
 abspath = os.path.abspath(__file__)
@@ -42,9 +47,11 @@ memo = dict()
 print()
 for search in searches:
     for result in search_items(search):
-        if memo.get(result['identifier']): next
+        if result['identifier'] in memo:
+            continue
+        memo[result['identifier']] = True
         print("https://archive.org/details/" + result['identifier'])
-        print("-" * 30)
+        print("-" * 50)
         for g in globs:
             for f in get_files(result['identifier'], glob_pattern=g):
                 res = cur.execute(query, { "url": f.url })
@@ -67,9 +74,8 @@ for search in searches:
                             if choice == 'd': sys.exit()
                             if choice != 's' and choice != 'l':
                                 choice = ''
-                        note = input("note: ")
+                        note = input("note [enter to leave unchanged]: ")
                         if sr and sr[1] and note == '': note = sr[1]
                         survey_cur.execute(survey_insert,{ "url": f.url, "status": choice, "note": note} )
                         survey_con.commit()
-        memo[result['identifier']] = True
         print()
