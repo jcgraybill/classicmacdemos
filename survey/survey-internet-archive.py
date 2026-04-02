@@ -4,11 +4,19 @@ from internetarchive import get_item, search_items, get_files
 import os, sqlite3, sys
 
 searches = [
+    'collection:macaddict_coverdiscs',
     'collection:macformat-mag-cds',
-    'subject:"MacFormat" AND mediatype:"software"',
     'collection:macworld-cds',
-    'subject:"Macworld" AND mediatype:"software"',
+
+    'creator:"AMUG"',
+    'creator:"Aztech New Media Corp." AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
+    'creator:"Berkeley Macintosh User\'s Group"',
     'creator:"Macworld" AND mediatype:"software"',
+
+    'subject:"MacFormat" AND mediatype:"software"',
+    'subject:"Macworld" AND mediatype:"software"',
+
+    '"BBS in a BOX" AND mediatype:"software"',
 ]
 
 globs = [
@@ -31,7 +39,8 @@ cur = con.cursor()
 query = """
 select count() from demos_source where infinite_mac_url = :url
     OR disc2_infinite_mac_url = :url
-    OR disc3_infinite_mac_url = :url;
+    OR disc3_infinite_mac_url = :url
+    OR disc4_infinite_mac_url = :url;
 """
 
 survey_con = sqlite3.connect("survey.sqlite3")
