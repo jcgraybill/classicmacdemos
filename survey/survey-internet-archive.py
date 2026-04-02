@@ -4,15 +4,16 @@ from internetarchive import get_item, search_items, get_files
 import os, sqlite3, sys
 
 searches = [
+    'collection:macformat-mag-cds',
+    'subject:"MacFormat" AND mediatype:"software"',
     'collection:macworld-cds',
     'subject:"Macworld" AND mediatype:"software"',
     'creator:"Macworld" AND mediatype:"software"',
-    'collection:macformat-mag-cds',
-    'subject:"MacFormat" AND mediatype:"software"',
 ]
 
 globs = [
     '*.iso',
+    '*.ISO',
     '*.toast',
     '*.bin',
     '*.cdr',
