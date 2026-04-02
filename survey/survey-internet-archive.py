@@ -11,6 +11,7 @@ searches = [
     'creator:"AMUG"',
     'creator:"Aztech New Media Corp." AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
     'creator:"Berkeley Macintosh User\'s Group"',
+    'creator:"MacAddict"',
     'creator:"Macworld" AND mediatype:"software"',
 
     'subject:"MacFormat" AND mediatype:"software"',
