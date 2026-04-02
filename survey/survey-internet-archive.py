@@ -14,6 +14,7 @@ searches = [
     'creator:"MacAddict"',
     'creator:"Macworld" AND mediatype:"software"',
 
+    'subject:"MacAddict" AND mediatype:"software"',
     'subject:"MacFormat" AND mediatype:"software"',
     'subject:"Macworld" AND mediatype:"software"',
 
