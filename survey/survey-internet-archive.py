@@ -7,18 +7,27 @@ searches = [
     'collection:macaddict_coverdiscs',
     'collection:macformat-mag-cds',
     'collection:macworld-cds',
+    'collection:cdnetpower',
 
     'creator:"AMUG"',
     'creator:"Aztech New Media Corp." AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
     'creator:"Berkeley Macintosh User\'s Group"',
     'creator:"MacAddict"',
+    'creator:"MacHome" AND mediatype:"software"',
+    'creator:"MacUser" AND mediatype:"software"',
     'creator:"Macworld" AND mediatype:"software"',
+    'creator:"Net Power"',
+    'creator:"Netpower"',
 
     'subject:"MacAddict" AND mediatype:"software"',
     'subject:"MacFormat" AND mediatype:"software"',
+    'subject:"MacHome" AND mediatype:"software"',
     'subject:"Macworld" AND mediatype:"software"',
+    'subject:"MacUser" !MACBIN AND mediatype:"software"'
 
     '"BBS in a BOX" AND mediatype:"software"',
+    '"MacHome" AND mediatype:"software"',
+    '"MacUser" !MACBIN AND mediatype:"software"'
 ]
 
 globs = [
