@@ -16,6 +16,7 @@ searches = [
     'creator:"MacHome" AND mediatype:"software"',
     'creator:"MacUser" AND mediatype:"software"',
     'creator:"Macworld" AND mediatype:"software"',
+    'creator:"MM-Musik-Media-Verlag"',
     'creator:"Net Power"',
     'creator:"Netpower"',
 
@@ -23,7 +24,8 @@ searches = [
     'subject:"MacFormat" AND mediatype:"software"',
     'subject:"MacHome" AND mediatype:"software"',
     'subject:"Macworld" AND mediatype:"software"',
-    'subject:"MacUser" !MACBIN AND mediatype:"software"'
+    'subject:"MacUser" !MACBIN AND mediatype:"software"',
+    'subject:"Next Generation" 25',
 
     '"BBS in a BOX" AND mediatype:"software"',
     '"MacHome" AND mediatype:"software"',
