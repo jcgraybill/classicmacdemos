@@ -27,9 +27,12 @@ for result in res.fetchall():
     if HTML:
         print("<tr>")
         print("<td>{name}</td>".format(name=result[5]))
-        print("<td><a href=\"{mg}\">Macintosh Garden</a></td>".format(mg=result[1]))
+        if result[1]:
+            print("<td><a href=\"{mg}\">Macintosh Garden</a></td>".format(mg=result[1]))
+        else:
+            print("<td>no page</td>")
         print("<td>")
-        for i in range(2,4):
+        for i in range(2,5):
             if result[i]:
                 print("<a href=\"{url}\">{filename}</a>".format(
                     url="https://download.classicmacdemos.com/" + urllib.parse.quote(result[i]),
