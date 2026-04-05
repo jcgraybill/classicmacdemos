@@ -4,10 +4,11 @@ from internetarchive import get_item, search_items, get_files
 import os, sqlite3, sys
 
 searches = [
+    'collection:cdnetpower',
+    'collection:cdromtodaycds',
     'collection:macaddict_coverdiscs',
     'collection:macformat-mag-cds',
     'collection:macworld-cds',
-    'collection:cdnetpower',
 
     'creator:"AMUG"',
     'creator:"Aztech New Media Corp." AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
@@ -20,6 +21,7 @@ searches = [
     'creator:"Net Power"',
     'creator:"Netpower"',
 
+    'subject:"Imagine Publishing" AND mediatype:"software"',
     'subject:"MacAddict" AND mediatype:"software"',
     'subject:"MacFormat" AND mediatype:"software"',
     'subject:"MacHome" AND mediatype:"software"',
