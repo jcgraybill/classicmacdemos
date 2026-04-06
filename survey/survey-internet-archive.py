@@ -3,7 +3,8 @@
 from internetarchive import get_item, search_items, get_files
 import os, sqlite3, sys
 
-PRELABEL = False
+PRELABEL = True
+DEEP = False
 
 prelabels = [
     'uploader:(jcg@cro-magnon.com) AND mediatype:"software"',
@@ -48,6 +49,7 @@ globs = [
     '*.ISO',
     '*.toast',
     '*.bin',
+    '*.BIN',
     '*.cdr',
     '*.sit',
     '*.dmg',
@@ -60,11 +62,27 @@ os.chdir(dname)
 
 survey_con = sqlite3.connect("survey.sqlite3")
 survey_cur = survey_con.cursor()
+survey_shallow_peek = "select count() from internet_archive where url like '%{url}%' and status != 'l';"
 survey_peek = "select status, note from internet_archive where url = :url;"
 survey_insert = """
 insert into internet_archive(url, status, note) 
 values(:url, :status, :note)
 on conflict (url) do update set status=:status, note=:note;
+"""
+
+con = sqlite3.connect("../website/db.sqlite3")
+cur = con.cursor()
+shallow_query = """
+select count() from demos_source where infinite_mac_url like '%{url}%'
+    OR disc2_infinite_mac_url like '%{url}%'
+    OR disc3_infinite_mac_url like '%{url}%'
+    OR disc4_infinite_mac_url like '%{url}%';
+"""
+query = """
+select count() from demos_source where infinite_mac_url = :url
+    OR disc2_infinite_mac_url = :url
+    OR disc3_infinite_mac_url = :url
+    OR disc4_infinite_mac_url = :url;
 """
 
 memo = dict()
@@ -78,33 +96,58 @@ if PRELABEL:
                 print("➡️ https://archive.org/details/" + result['identifier'])    
                 continue
             memo[result['identifier']] = True
+
+            if not DEEP:
+                res = survey_cur.execute(survey_shallow_peek.format(url = result['identifier']))
+                if res.fetchone()[0] > 0:
+                    print("➡️ https://archive.org/details/" + result['identifier'])
+                    continue
+                res = cur.execute(shallow_query.format(url = result['identifier']))
+                if res.fetchone()[0] > 0:
+                    print("➡️ https://archive.org/details/" + result['identifier'])
+                    continue
+
             print("https://archive.org/details/" + result['identifier'])
             print("-" * 50)
+
+            found = False
             for g in globs:
                 for f in get_files(result['identifier'], glob_pattern=g):
+                    found = True
                     print("➡️ {url}".format(url=f.url))
                     survey_cur.execute(survey_insert,{ "url": f.url, "status": 'p', "note": search} )
                     survey_con.commit()
-            print()
+            if not found:
+                url = "https://archive.org/details/" + result['identifier']
+                print("➡️ {url}".format(url=url))
+                survey_cur.execute(survey_insert,{ "url": url, "status": 'p', "note": search} )
+                survey_con.commit()
 
-con = sqlite3.connect("../website/db.sqlite3")
-cur = con.cursor()
-query = """
-select count() from demos_source where infinite_mac_url = :url
-    OR disc2_infinite_mac_url = :url
-    OR disc3_infinite_mac_url = :url
-    OR disc4_infinite_mac_url = :url;
-"""
+            print()
 
 for search in searches:
     for result in search_items(search):
         if result['identifier'] in memo:
             continue
         memo[result['identifier']] = True
+
+        if not DEEP:
+            res = survey_cur.execute(survey_shallow_peek.format(url = result['identifier']))
+            if res.fetchone()[0] > 0:
+                print("➡️ https://archive.org/details/" + result['identifier'])
+                continue
+            res = cur.execute(shallow_query.format(url = result['identifier']))
+            if res.fetchone()[0] > 0:
+                print("➡️ https://archive.org/details/" + result['identifier'])
+                continue
+
         print("https://archive.org/details/" + result['identifier'])
         print("-" * 50)
+
+        found = False
         for g in globs:
             for f in get_files(result['identifier'], glob_pattern=g):
+                found = True
                 res = cur.execute(query, { "url": f.url })
                 if res.fetchone()[0] > 0:
                     print("✅ {url}".format(url=f.url))
@@ -131,4 +174,10 @@ for search in searches:
                         if sr and sr[1] and note == '': note = sr[1]
                         survey_cur.execute(survey_insert,{ "url": f.url, "status": choice, "note": note} )
                         survey_con.commit()
+        if not found:
+            url = "https://archive.org/details/" + result['identifier']
+            print("➡️ {url}".format(url=url))
+            survey_cur.execute(survey_insert,{ "url": url, "status": 'p', "note": search} )
+            survey_con.commit()
+
         print()
