@@ -3,9 +3,18 @@
 from internetarchive import get_item, search_items, get_files
 import os, sqlite3, sys
 
+PRELABEL = False
+
+prelabels = [
+    'uploader:(jcg@cro-magnon.com) AND mediatype:"software"',
+    'uploader:(matt.sephton@gmail.com) AND mediatype:"software"'
+]
+
 searches = [
     'collection:cdnetpower',
     'collection:cdromtodaycds',
+    'collection:coverdiscs AND mediatype:"software" AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
+    'collection:coverdiscs_misc AND mediatype:"software" AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
     'collection:macaddict_coverdiscs',
     'collection:macformat-mag-cds',
     'collection:macworld-cds',
@@ -31,7 +40,7 @@ searches = [
 
     '"BBS in a BOX" AND mediatype:"software"',
     '"MacHome" AND mediatype:"software"',
-    '"MacUser" !MACBIN AND mediatype:"software"'
+    '"MacUser" mediatype:"software"'
 ]
 
 globs = [
@@ -49,15 +58,6 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-con = sqlite3.connect("../website/db.sqlite3")
-cur = con.cursor()
-query = """
-select count() from demos_source where infinite_mac_url = :url
-    OR disc2_infinite_mac_url = :url
-    OR disc3_infinite_mac_url = :url
-    OR disc4_infinite_mac_url = :url;
-"""
-
 survey_con = sqlite3.connect("survey.sqlite3")
 survey_cur = survey_con.cursor()
 survey_peek = "select status, note from internet_archive where url = :url;"
@@ -70,6 +70,32 @@ on conflict (url) do update set status=:status, note=:note;
 memo = dict()
 
 print()
+
+if PRELABEL:
+    for search in prelabels:
+        for result in search_items(search):
+            if result['identifier'] in memo:
+                print("➡️ https://archive.org/details/" + result['identifier'])    
+                continue
+            memo[result['identifier']] = True
+            print("https://archive.org/details/" + result['identifier'])
+            print("-" * 50)
+            for g in globs:
+                for f in get_files(result['identifier'], glob_pattern=g):
+                    print("➡️ {url}".format(url=f.url))
+                    survey_cur.execute(survey_insert,{ "url": f.url, "status": 'p', "note": search} )
+                    survey_con.commit()
+            print()
+
+con = sqlite3.connect("../website/db.sqlite3")
+cur = con.cursor()
+query = """
+select count() from demos_source where infinite_mac_url = :url
+    OR disc2_infinite_mac_url = :url
+    OR disc3_infinite_mac_url = :url
+    OR disc4_infinite_mac_url = :url;
+"""
+
 for search in searches:
     for result in search_items(search):
         if result['identifier'] in memo:
@@ -87,6 +113,8 @@ for search in searches:
                     sr = sur.fetchone()
                     if sr and sr[0] == 's':
                         print("⛔️ {url}".format(url=f.url))
+                    elif sr and sr[0] == 'p':
+                        print("➡️ {url}".format(url=f.url))
                     else:
                         print("❓ {url}".format(url=f.url))
                         if sr and sr[1]:
