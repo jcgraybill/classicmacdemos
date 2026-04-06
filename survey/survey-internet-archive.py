@@ -16,6 +16,7 @@ searches = [
     'collection:cdromtodaycds',
     'collection:coverdiscs AND mediatype:"software" AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
     'collection:coverdiscs_misc AND mediatype:"software" AND subject:("Macintosh" OR "Mac" OR "Macintosh software" OR "apple" OR "mac" OR "macintosh")',
+    'collection:insidemacgames'
     'collection:macaddict_coverdiscs',
     'collection:macformat-mag-cds',
     'collection:macworld-cds',
