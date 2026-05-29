@@ -19,6 +19,10 @@ class DetectOldBrowser:
             'Mac OS X 10_6',
             'Mac OS X 10.7',
             'Mac OS X 10_7',
+            'Mac OS X 10.8',
+            'Mac OS X 10_8',
+            'Mac OS X 10.9',
+            'Mac OS X 10_9',
             'BeOS',
             'cghmn-google-crawler',
         )
