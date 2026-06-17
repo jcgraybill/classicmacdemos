@@ -139,9 +139,4 @@ def home(request):
     return render(request,"demos/home.html", context)
 
 def css(request):
-    return HttpResponse(
-        render(request, "demos/classicmacdemos.css", {}),
-        headers={
-         "Content-Type": "text/css",
-        }
-    )
+    return redirect("https://static.classicmacdemos.com/classicmacdemos.css")
