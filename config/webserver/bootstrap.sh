@@ -1,7 +1,7 @@
 #!/bin/sh
 
 sudo dnf install -y gcc git nginx cronie sqlite python3-pip python3-devel
-python3 -m pip install Django uwsgi markdown boto3
+python3 -m pip install Django uwsgi markdown boto3 dotenv
 
 sudo mkdir /var/run/uwsgi
 sudo chmod 777 /var/run/uwsgi
